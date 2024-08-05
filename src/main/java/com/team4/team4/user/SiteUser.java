@@ -19,15 +19,4 @@ public class SiteUser {
 
     @Column(unique = true)
     private String email;
-
-    @Column(unique = true)
-    private String contactNumber;  // 연락처
-
-    @Column(length = 255)
-    private String profilePicture;
-
-    @Column(length = 1000)
-    private String bio;
-
-    private String socialMediaHandles;  // SNS 계정
 }
