@@ -8,22 +8,22 @@ import java.time.LocalDateTime;
 
 @Entity
 public class Comment {
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-  @ManyToOne
-  @JoinColumn(name = "userId", nullable = false)
-  private SiteUser user;
+    @ManyToOne
+    @JoinColumn(name = "userId", nullable = false)
+    private SiteUser user;
 
-  @ManyToOne
-  @JoinColumn(name = "boardId", nullable = false)
-  private Board board;
+    @ManyToOne
+    @JoinColumn(name = "boardId", nullable = false)
+    private Board board;
 
-  @Column(nullable = false)
-  private String content;
+    @Column(nullable = false)
+    private String content;
 
-  @Column(nullable = false)
-  private LocalDateTime createdAt;
+    @Column(nullable = false)
+    private LocalDateTime createdAt;
 
 }

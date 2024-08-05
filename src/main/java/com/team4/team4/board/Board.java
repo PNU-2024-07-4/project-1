@@ -13,38 +13,38 @@ import java.util.List;
 @Setter
 @Entity
 public class Board {
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-  @ManyToOne
-  @JoinColumn(name = "userId", nullable = false)
-  private SiteUser user;
+    @ManyToOne
+    @JoinColumn(name = "userId", nullable = false)
+    private SiteUser user;
 
-  @Column(nullable = false, length = 50)
-  private String subject;
+    @Column(nullable = false, length = 50)
+    private String subject;
 
-  @Column(nullable = false, length = 255)
-  private String content;
+    @Column(nullable = false, length = 255)
+    private String content;
 
-  @Column(nullable = false)
-  private LocalDateTime startDay;
+    @Column(nullable = false)
+    private LocalDateTime startDay;
 
-  @Column(nullable = false)
-  private LocalDateTime endDay;
+    @Column(nullable = false)
+    private LocalDateTime endDay;
 
-  @Column(nullable = false, length = 50)
-  private String region;
+    @Column(nullable = false, length = 50)
+    private String region;
 
-  @Column(nullable = false)
-  private int recruitNumber;
+    @Column(nullable = false)
+    private int recruitNumber;
 
-  private int currentNumber;
+    private int currentNumber;
 
-  @Column(length = 50)
-  private String recommendedTo;
+    @Column(length = 50)
+    private String recommendedTo;
 
-  @OneToMany(mappedBy = "board")
-  private List<Comment> comments;
+    @OneToMany(mappedBy = "board")
+    private List<Comment> comments;
 
 }
