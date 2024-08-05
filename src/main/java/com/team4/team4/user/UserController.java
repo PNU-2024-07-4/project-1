@@ -4,10 +4,15 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import java.security.Principal;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Controller
@@ -32,7 +37,8 @@ public class UserController {
         }
         try {
             userService.create(userCreateForm.getUsername(),
-                    userCreateForm.getEmail(), userCreateForm.getPassword1());
+                    userCreateForm.getEmail(), userCreateForm.getPassword1(), userCreateForm.getBio(),
+                    userCreateForm.getContactNumber(), userCreateForm.getSocialMediaHandles());
         }catch(DataIntegrityViolationException e) {
             e.printStackTrace();
             bindingResult.reject("signupFailed", "이미 등록된 사용자입니다.");
@@ -48,5 +54,36 @@ public class UserController {
     @GetMapping("/login")
     public String login() {
         return "login_form";
+    }
+
+    @GetMapping("/profile")
+    public String profile(Model model, Principal principal) {
+        SiteUser loggedInUser = this.userService.getUser(principal.getName());
+        model.addAttribute("loggedInUser", loggedInUser);
+
+        return "profile_form";
+    }
+
+    @GetMapping("/profile/modify")
+    public String profileModify(Model model, UserModifyForm userModifyForm, Principal principal) {
+        SiteUser loggedInUser = this.userService.getUser(principal.getName());
+        userModifyForm.setBio(loggedInUser.getBio());
+        userModifyForm.setContactNumber(loggedInUser.getContactNumber());
+        userModifyForm.setSocialMediaHandles(loggedInUser.getSocialMediaHandles());
+        return "profile_modify";
+    }
+
+    @PostMapping("/profile/modify")
+    public String profileModify(@Valid UserModifyForm userModifyForm,
+                                BindingResult bindingResult, Principal principal) {
+
+        SiteUser loggedInUser = this.userService.getUser(principal.getName());
+
+        if (bindingResult.hasErrors()) {
+            return "profile_modify";
+        }
+
+        this.userService.modify(loggedInUser, userModifyForm.getBio(),userModifyForm.getContactNumber(),userModifyForm.getSocialMediaHandles());
+        return "redirect:/user/profile/modify";
     }
 }
