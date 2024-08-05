@@ -27,7 +27,8 @@
                     tabindex="0"
                     class="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow">
                     <li><a th:href="@{/}"><i class="fa-solid fa-house"></i><span>홈</span></a></li>
-                    <li><a th:href="@{/user/profile}"><i class="fa-regular fa-user"></i><span>프로필</span></a></li>
+                    <li><a sec:authorize="isAnonymous()" th:href="@{/user/login}"><i class="fa-regular fa-user"></i><span>프로필</span></a></li>
+                    <li><a sec:authorize="isAuthenticated()" th:href="@{/user/profile}"><i class="fa-regular fa-user"></i><span>프로필</span></a></li>
                     <li><a sec:authorize="isAnonymous()" th:href="@{/user/login}"><i class="fa-solid fa-arrow-right-to-bracket"></i><span>로그인</span></a></li>
                     <li><a sec:authorize="isAuthenticated()" th:href="@{/user/logout}"><i class="fa-solid fa-arrow-right-from-bracket"></i><span>로그아웃</span></a></li>
                 </ul>
@@ -38,7 +39,9 @@
         </div>
         <div class="navbar-end">
             <button class="btn btn-ghost btn-circle">
-                <i class="fa-regular fa-user"></i>
+                <a sec:authorize="isAuthenticated()" th:href="@{/user/profile}"><i class="fa-regular fa-user"></i></a>
+                <a sec:authorize="isAnonymous()" th:href="@{/user/login}"><i class="fa-regular fa-user"></i></a>
+            </button>
             </button>
         </div>
     </div>
