@@ -20,7 +20,7 @@ public class Comment {
   @JoinColumn(name = "boardId", nullable = false)
   private Board board;
 
-  @Column(nullable = false, length = 255)
+  @Column(nullable = false)
   private String content;
 
   @Column(nullable = false)
