@@ -64,16 +64,26 @@ public class UserController {
         return "profile_form";
     }
 
-    @GetMapping("profile/modify")
-    public String profileModify(@Valid UserCreateForm userCreateForm,
-                                BindingResult bindingResult, Principal principal) {
-        if (bindingResult.hasErrors()) {
-            return "profile_form";
-        }
+    @GetMapping("/profile/modify")
+    public String profileModify(Model model, UserModifyForm userModifyForm, Principal principal) {
         SiteUser loggedInUser = this.userService.getUser(principal.getName());
-        userCreateForm.setBio(loggedInUser.getBio());
-        userCreateForm.setContactNumber(loggedInUser.getContactNumber());
-        userCreateForm.setSocialMediaHandles(loggedInUser.getSocialMediaHandles());
+        userModifyForm.setBio(loggedInUser.getBio());
+        userModifyForm.setContactNumber(loggedInUser.getContactNumber());
+        userModifyForm.setSocialMediaHandles(loggedInUser.getSocialMediaHandles());
         return "profile_modify";
+    }
+
+    @PostMapping("/profile/modify")
+    public String profileModify(@Valid UserModifyForm userModifyForm,
+                                BindingResult bindingResult, Principal principal) {
+
+        SiteUser loggedInUser = this.userService.getUser(principal.getName());
+
+        if (bindingResult.hasErrors()) {
+            return "profile_modify";
+        }
+
+        this.userService.modify(loggedInUser, userModifyForm.getBio(),userModifyForm.getContactNumber(),userModifyForm.getSocialMediaHandles());
+        return "redirect:/user/profile/modify";
     }
 }

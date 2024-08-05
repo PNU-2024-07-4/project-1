@@ -34,4 +34,11 @@ public class UserService {
             throw new DataNotFoundException("siteuser not found");
         }
     }
+
+    public void modify(SiteUser siteUser, String bio, String contactNumber, String socialMediaHandle) {
+        siteUser.setBio(bio);
+        siteUser.setContactNumber(contactNumber);
+        siteUser.setSocialMediaHandles(socialMediaHandle);
+        this.userRepository.save(siteUser);
+    }
 }

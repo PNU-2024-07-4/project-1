@@ -1,0 +1,27 @@
+<html layout:decorate="~{layout}" xmlns:th="http://www.w3.org/1999/xhtml" xmlns:layout="http://www.w3.org/1999/xhtml">
+<div layout:fragment="content" class="container my-3">
+    <div class="my-3 border-bottom">
+        <div>
+            <h4>프로필 수정</h4>
+        </div>
+    </div>
+    <form th:action="@{/user/profile/modify}" th:object="${userModifyForm}" method="post">
+        <div th:replace="~{form_errors :: formErrorsFragment}"></div>
+        <div class="mb-3">
+            <label for="contactNumber" id="contactNumber" class="form-label">연락처</label>
+            <input type="text"  th:field="*{contactNumber}" class="form-control">
+        </div>
+
+        <div class="mb-3">
+            <label for="bio" id="bio" class="form-label">자기소개</label>
+            <textarea type="bio" th:field="*{bio}" class="form-control" rows="4"></textarea>
+        </div>
+
+        <div class="mb-3">
+            <label for="socialMediaHandles" id="socialMediaHandles" class="form-label">SNS 계정</label>
+            <input type="text" th:field="*{socialMediaHandles}" class="form-control">
+        </div>
+        <button type="submit" class="btn btn-primary">수정</button>
+    </form>
+</div>
+</html>
