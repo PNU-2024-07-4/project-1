@@ -1,10 +1,12 @@
 package com.team4.team4.user;
 
+import jakarta.persistence.Column;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.web.multipart.MultipartFile;
 
 @Getter
 @Setter
@@ -32,4 +34,5 @@ public class UserCreateForm {
 
     @Size(max = 255, message = "SNS 계정은 최대 255자까지 입력 가능합니다.")
     private String socialMediaHandles;  // SNS 계정
+
 }

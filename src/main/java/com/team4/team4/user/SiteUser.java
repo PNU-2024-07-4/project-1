@@ -23,9 +23,6 @@ public class SiteUser {
     @Column(unique = true)
     private String contactNumber;  // 연락처
 
-    @Column(length = 255)
-    private String profilePicture;
-
     @Column(length = 200)
     private String bio;
 
