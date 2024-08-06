@@ -5,7 +5,7 @@
 <div layout:fragment="content">
     <div>
         <div>
-            <form th:action="@{/user/login}" method="post">
+            <form th:action="@{/board/create}" method="post">
                 <!-- 오류 메시지 -->
                 <div th:if="${param.error}">
                     빈칸 없이 작성해주세요
