@@ -1,5 +1,10 @@
 <!DOCTYPE html>
 <html layout:decorate="~{layout}" xmlns:layout="http://www.w3.org/1999/xhtml" xmlns:th="http://www.w3.org/1999/xhtml">
 <div layout:fragment="content">
+    <form th:action="@{/board/create}" method="get" class="space-y-4">
+        <button type="submit">게시판 바로가기</button>
+    </form>
+
 </div>
+
 </html>
