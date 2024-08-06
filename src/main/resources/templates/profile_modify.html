@@ -1,27 +1,36 @@
-<html layout:decorate="~{layout}" xmlns:th="http://www.w3.org/1999/xhtml" xmlns:layout="http://www.w3.org/1999/xhtml">
-<div layout:fragment="content" class="container my-3">
-    <div class="my-3 border-bottom">
-        <div>
-            <h4>프로필 수정</h4>
-        </div>
+<html layout:decorate="~{layout}" xmlns:th="http://www.w3.org/1999/xhtml" xmlns:layout="http://www.w3.org/1999/xhtml"
+      xmlns="http://www.w3.org/1999/html">
+<div layout:fragment="content" class="container my-3 mx-auto max-w-lg p-4">
+    <div class="my-3 border-b pb-2 text-center">
+        <h4 class="text-xl font-semibold">프로필 수정</h4>
     </div>
     <form th:action="@{/user/profile/modify}" th:object="${userModifyForm}" method="post">
         <div th:replace="~{form_errors :: formErrorsFragment}"></div>
-        <div class="mb-3">
-            <label for="contactNumber" id="contactNumber" class="form-label">연락처</label>
-            <input type="text"  th:field="*{contactNumber}" class="form-control">
+        <div class="mb-3 flex justify-center">
+            <label for="contactNumber" id="contactNumber" class="form-control w-full max-w-xs">
+                <div class="label">
+                    <span class="label-text">연락처</span>
+                </div>
+                <input type="text"  th:field="*{contactNumber}" class="input input-bordered w-full max-w-xs">
+            </label>
         </div>
-
-        <div class="mb-3">
-            <label for="bio" id="bio" class="form-label">자기소개</label>
-            <textarea type="bio" th:field="*{bio}" class="form-control" rows="4"></textarea>
+        <div class="mb-3 flex justify-center">
+            <label for="bio" id="bio" class="form-control w-full max-w-xs">
+                <div class="label">
+                    <span class="label-text">자기소개</span>
+                </div>
+            <textarea type="bio" th:field="*{bio}" class="textarea textarea-bordered" rows="4"></textarea>
+            </label>
         </div>
-
-        <div class="mb-3">
-            <label for="socialMediaHandles" id="socialMediaHandles" class="form-label">SNS 계정</label>
-            <input type="text" th:field="*{socialMediaHandles}" class="form-control">
+        <div class="mb-3 flex justify-center">
+            <label for="socialMediaHandles" id="socialMediaHandles" class="form-control w-full max-w-xs">
+                <div class="label">
+                    <span class="label-text">SNS 계정</span>
+                </div>
+            <input type="text" th:field="*{socialMediaHandles}" class="input input-bordered w-full max-w-xs">
+            </label>
         </div>
-        <button type="submit" class="btn btn-primary">수정</button>
+        <button type="submit" class="btn btn-primary w-full">수정</button>
     </form>
 </div>
 </html>
