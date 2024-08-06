@@ -26,7 +26,7 @@ public class SiteUser {
     @Column(length = 255)
     private String profilePicture;
 
-    @Column(length = 1000)
+    @Column(length = 200)
     private String bio;
 
     private String socialMediaHandles;  // SNS 계정
