@@ -26,8 +26,8 @@
             <h2 class="post-title" th:text="${board.subject}">게시글 제목</h2>
             <p class="post-content" th:text="${board.content}">게시글 내용</p>
             <p class="post-status">모집현황: <span
-                    th:text="${board.recruitNumber > board.currentNumber ? '모집중' : '모집마감'}"></span></p>
-            <p class="post-period" th:text="${board.startDay + ' ~ ' + board.endDay}">모집기간</p>
+                    th:text="${board.currentNumber} + '/' +  ${board.recruitNumber}"></span></p>
+            <p class="post-period" th:text="${board.startDay} + ' ~ ' + ${board.endDay}">모집기간</p>
             <p class="post-location" th:text="${board.region}">지역</p>
         </div>
     </th:block>

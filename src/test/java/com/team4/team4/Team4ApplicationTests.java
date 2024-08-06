@@ -8,7 +8,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Random;
 
 @SpringBootTest
 class Team4ApplicationTests {
@@ -21,51 +23,30 @@ class Team4ApplicationTests {
 
     @Test
     void contextLoads() {
-        // 예시 사용자 생성
+
+        // 예제 사용자 생성
         SiteUser user = new SiteUser();
-        user.setUsername("user1");
-        user.setPassword("123");
-        user.setEmail("user1@example.com");
+        user.setUsername("user12");
+        user.setPassword("1234");
+        user.setEmail("user12@example.com");
         this.userRepository.save(user);
 
-        // 첫번째 게시판 데이터 생성
-        Board b1 = new Board();
-        b1.setUser(user);
-        b1.setSubject("첫번째 게시판 주제");
-        b1.setContent("첫번째 게시판 내용입니다.");
-        b1.setStartDay(LocalDateTime.now());
-        b1.setEndDay(LocalDateTime.now().plusDays(7));
-        b1.setRegion("서울");
-        b1.setRecruitNumber(10);
-        b1.setCurrentNumber(0);
-        b1.setRecommendedTo("학생");
-        this.boardRepository.save(b1);
+        Random random = new Random();
 
-        // 두번째 게시판 데이터 생성
-        Board b2 = new Board();
-        b2.setUser(user);
-        b2.setSubject("두번째 게시판 주제");
-        b2.setContent("두번째 게시판 내용입니다.");
-        b2.setStartDay(LocalDateTime.now());
-        b2.setEndDay(LocalDateTime.now().plusDays(5));
-        b2.setRegion("부산");
-        b2.setRecruitNumber(20);
-        b2.setCurrentNumber(5);
-        b2.setRecommendedTo("개발자");
-        this.boardRepository.save(b2);
-
-        // 세번째 게시판 데이터 생성
-        Board b3 = new Board();
-        b3.setUser(user);
-        b3.setSubject("세번째 게시판 주제");
-        b3.setContent("세번째 게시판 내용입니다.");
-        b3.setStartDay(LocalDateTime.now());
-        b3.setEndDay(LocalDateTime.now().plusDays(10));
-        b3.setRegion("대구");
-        b3.setRecruitNumber(15);
-        b3.setCurrentNumber(3);
-        b3.setRecommendedTo("디자이너");
-        this.boardRepository.save(b3);
+        // 50개의 예제 데이터 생성
+        for (int i = 1; i <= 50; i++) {
+            Board board = new Board();
+            board.setUser(user);
+            board.setSubject("주제 " + i);
+            board.setContent("내용 " + i);
+            board.setStartDay(LocalDate.now().minusDays(random.nextInt(30)));
+            board.setEndDay(LocalDate.now().plusDays(random.nextInt(30)));
+            board.setRegion("지역 " + (random.nextInt(5) + 1));
+            board.setRecruitNumber(random.nextInt(50) + 1);
+            board.setCurrentNumber(random.nextInt(10));
+            board.setRecommendedTo("대상 " + (random.nextInt(5) + 1));
+            this.boardRepository.save(board);
+        }
     }
 
 }

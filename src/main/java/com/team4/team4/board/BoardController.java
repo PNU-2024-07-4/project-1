@@ -23,4 +23,6 @@ public class BoardController {
         model.addAttribute("boards", boards);
         return "main_board";
     }
+
+
 }
