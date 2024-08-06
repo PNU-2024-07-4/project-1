@@ -1,26 +1,41 @@
-<html layout:decorate="~{layout}" xmlns:layout="http://www.w3.org/1999/xhtml" xmlns:th="http://www.w3.org/1999/xhtml">
-<div layout:fragment="content" class="container my-3">
-    <div class="profile-card card shadow-sm">
-        <div class="profile-header card-header">
-            <h2 class="card-title" th:text="${loggedInUser.username}">사용자 이름</h2>
+<!DOCTYPE html>
+<html layout:decorate="~{layout}" xmlns:th="http://www.w3.org/1999/xhtml" xmlns:layout="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Profile Card</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <!-- Include DaisyUI -->
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@1.10.0/dist/full.css" rel="stylesheet">
+</head>
+<body>
+<div layout:fragment="content" class="container my-6 mx-auto flex justify-center">
+    <div class="card bg-white border border-gray-200 shadow-lg rounded-lg max-w-md w-full">
+        <div class="card-header bg-primary text-white py-5 px-6 rounded-t-lg flex items-center justify-center">
+            <h2 class="text-3xl font-bold" th:text="${loggedInUser.username}">사용자 이름</h2>
         </div>
-        <div class="profile-info card-body">
-            <p class="card-text">
-                <strong>자기소개:</strong><br>
-                <span th:text="${loggedInUser.bio}">자기소개</span>
-            </p>
-            <p class="card-text">
-                <strong>전화번호:</strong><br>
-                <span th:text="${loggedInUser.contactNumber}">전화번호</span>
-            </p>
-            <p class="card-text">
-                <strong>SNS 계정:</strong><br>
-                <span th:text="${loggedInUser.socialMediaHandles}">SNS 계정</span>
-            </p>
+        <div class="card-body p-6">
+            <div class="mb-5">
+                <p class="text-base font-medium text-gray-800">
+                    <span class="font-semibold">자기소개:</span>
+                </p>
+                <p th:text="${loggedInUser.bio}" class="text-gray-600 mt-1">자기소개</p>
+            </div>
+            <div class="mb-5">
+                <p class="text-base font-medium text-gray-800">
+                    <span class="font-semibold">전화번호:</span>
+                </p>
+                <p th:text="${loggedInUser.contactNumber}" class="text-gray-600 mt-1">전화번호</p>
+            </div>
+            <div class="mb-5">
+                <p class="text-base font-medium text-gray-800">
+                    <span class="font-semibold">SNS 계정:</span>
+                </p>
+                <p th:text="${loggedInUser.socialMediaHandles}" class="text-gray-600 mt-1">SNS 계정</p>
+            </div>
         </div>
-        <div class="card-footer text-center">
-            <a href="#" class="btn btn-primary btn-edit" th:href="@{/user/profile/modify}">프로필 수정</a>
+        <div class="card-footer text-center py-5 bg-gray-100 rounded-b-lg">
+            <a href="#" class="btn btn-primary" th:href="@{/user/profile/modify}">프로필 수정</a>
         </div>
     </div>
 </div>
+</body>
 </html>
