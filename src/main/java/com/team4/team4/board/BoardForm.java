@@ -23,12 +23,10 @@ public class BoardForm {
     @Size(max = 250)
     private String content;
 
-//    @NotEmpty(message = "시작날자는 필수 항목입니다.")
     @NotNull
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     private LocalDate startDay;
 
-//    @NotEmpty(message = "종료날자는 필수 항목입니다.")
     @NotNull
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     private LocalDate endDay;
@@ -37,7 +35,6 @@ public class BoardForm {
     @Size(max = 50)
     private String region;
 
-//    @NotEmpty(message = "필요한 인원은 필수 항목입니다.")
     @NotNull
     private int recruitNumber;
 

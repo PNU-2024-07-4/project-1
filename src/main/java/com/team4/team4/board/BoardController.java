@@ -1,6 +1,5 @@
 package com.team4.team4.board;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,30 +9,18 @@ import com.team4.team4.user.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
-import java.util.List;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 
 @Controller
-//@RequestMapping("/board")
+@RequestMapping("/board")
+@RequiredArgsConstructor
 public class BoardController {
     private final BoardService boardService;
     private final UserService userService;
-
-    @Autowired
-    public BoardController(BoardService boardService, UserService userService) {
-        this.boardService = boardService;
-        this.userService = userService;
-    }
 
     @GetMapping("/")
     public String getAllBoards(Model model, @RequestParam(value="page", defaultValue ="0") int page) {
@@ -42,7 +29,7 @@ public class BoardController {
         return "main_board";
     }
 
-    @GetMapping("/board/detail/{id}")
+    @GetMapping("/detail/{id}")
     public String detail(Model model, @PathVariable("id") Long id) {
         Board board = this.boardService.getBoard(id);
         model.addAttribute("board", board);
@@ -50,13 +37,13 @@ public class BoardController {
     }
 
     @PreAuthorize("isAuthenticated()")
-    @GetMapping("board/create")
+    @GetMapping("/create")
     public String createBoard(BoardForm boardForm) {
         return "board_create_form";
     }
 
     @PreAuthorize("isAuthenticated()")
-    @PostMapping("board/create")
+    @PostMapping("/create")
     public String createBoard(@Valid BoardForm boardForm, BindingResult bindingResult, Principal principal) {
         if(bindingResult.hasErrors()) {
             System.out.println(bindingResult.getAllErrors());
