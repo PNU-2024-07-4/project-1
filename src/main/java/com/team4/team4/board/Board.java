@@ -8,6 +8,7 @@ import lombok.Setter;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Getter
@@ -48,4 +49,13 @@ public class Board {
     @OneToMany(mappedBy = "board")
     private List<Comment> comments;
 
+  public String getFormattedStartDay() {
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy.MM.dd HH:mm");
+    return startDay.format(formatter);
+  }
+
+  public String getFormattedEndDay() {
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy.MM.dd HH:mm");
+    return endDay.format(formatter);
+  }
 }
