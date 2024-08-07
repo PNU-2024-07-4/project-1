@@ -1,6 +1,7 @@
 package com.team4.team4.board;
 
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -12,6 +13,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import org.springframework.validation.BindingResult;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.security.Principal;
 
@@ -39,7 +41,7 @@ public class BoardController {
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/create")
     public String createBoard(BoardForm boardForm) {
-        return "board_create_form";
+        return "board_form";
     }
 
     @PreAuthorize("isAuthenticated()")
@@ -47,12 +49,29 @@ public class BoardController {
     public String createBoard(@Valid BoardForm boardForm, BindingResult bindingResult, Principal principal) {
         if(bindingResult.hasErrors()) {
             System.out.println(bindingResult.getAllErrors());
-            return "board_create_form";
+            return "board_form";
         }
         SiteUser user = this.userService.getUser(principal.getName());
 
         this.boardService.create(boardForm,user );
         return "redirect:/";
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/edit/{id}")
+    public String editBoard(BoardForm boardForm, @PathVariable("id") Long id, Principal principal) {
+        Board board = this.boardService.getBoard(id);
+        if(!board.getUser().getUsername().equals(principal.getName())){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "수정 권한이 없습니다.");
+        }
+        boardForm.setContent(board.getContent());
+        boardForm.setRegion(board.getRegion());
+        boardForm.setSubject(board.getSubject());
+        boardForm.setStartDay(board.getStartDay());
+        boardForm.setEndDay(board.getEndDay());
+        boardForm.setRecommendedTo(board.getRecommendedTo());
+        boardForm.setRecruitNumber(board.getRecruitNumber());
+        return "board_form";
     }
 
 
