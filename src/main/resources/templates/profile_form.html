@@ -7,33 +7,34 @@
     <link href="https://cdn.jsdelivr.net/npm/daisyui@1.10.0/dist/full.css" rel="stylesheet">
 </head>
 <body>
-<div layout:fragment="content" class="container my-6 mx-auto flex justify-center">
-    <div class="card bg-white border border-gray-200 shadow-lg rounded-lg max-w-md w-full">
-        <div class="card-header bg-primary text-white py-5 px-6 rounded-t-lg flex items-center justify-center">
-            <h2 class="text-3xl font-bold" th:text="${loggedInUser.username}">사용자 이름</h2>
-        </div>
-        <div class="card-body p-6">
-            <div class="mb-5">
-                <p class="text-base font-medium text-gray-800">
-                    <span class="font-semibold">자기소개:</span>
-                </p>
+<div layout:fragment="content" class="container mt-auto flex justify-center">
+    <div class="card bg-white border border-gray-200 shadow-lg max-w-md min-h-full w-full">
+        <!-- 헤더 -->
+        <div class="card-header bg-slate-200 text-black pt-14 py-14 px-6 rounded-b-lg">
+            <!-- 이름 -->
+            <h2 class="text-xl font-bold text-left" th:text="${loggedInUser.username}">사용자 이름</h2>
+            <div class="mt-2 text-slate-500 text-left text-sm">
                 <p th:text="${loggedInUser.bio}" class="text-gray-600 mt-1">자기소개</p>
             </div>
-            <div class="mb-5">
-                <p class="text-base font-medium text-gray-800">
-                    <span class="font-semibold">전화번호:</span>
+        </div>
+
+        <!-- 본문 -->
+        <div class="card-body p-6">
+            <div class="mb-5 text-xs">
+                <p class="font-medium text-gray-800">
+                    <span class="font-semibold">전화번호</span>
                 </p>
                 <p th:text="${loggedInUser.contactNumber}" class="text-gray-600 mt-1">전화번호</p>
             </div>
-            <div class="mb-5">
-                <p class="text-base font-medium text-gray-800">
-                    <span class="font-semibold">SNS 계정:</span>
+            <div class="mb-5 text-xs">
+                <p class="font-medium text-gray-800">
+                    <span class="font-semibold">SNS 계정</span>
                 </p>
                 <p th:text="${loggedInUser.socialMediaHandles}" class="text-gray-600 mt-1">SNS 계정</p>
             </div>
         </div>
-        <div class="card-footer text-center py-5 bg-gray-100 rounded-b-lg">
-            <a href="#" class="btn btn-primary" th:href="@{/user/profile/modify}">프로필 수정</a>
+        <div class="card-footer text-xs text-center py-5 rounded-b-lg">
+            <button class="btn btn-primary"><a th:href="@{/user/profile/modify}">프로필 수정</a></button>
         </div>
     </div>
 </div>

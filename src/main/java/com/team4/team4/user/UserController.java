@@ -84,6 +84,6 @@ public class UserController {
         }
 
         this.userService.modify(loggedInUser, userModifyForm.getBio(),userModifyForm.getContactNumber(),userModifyForm.getSocialMediaHandles());
-        return "redirect:/user/profile/modify";
+        return "redirect:/user/profile";
     }
 }
