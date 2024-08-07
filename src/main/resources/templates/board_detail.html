@@ -1,8 +1,9 @@
+<!-- board_detail.html -->
 <html layout:decorate="~{layout}" xmlns:layout="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>board 생성</title>
 </head>
-
+<body>
 <div layout:fragment="content">
     <div th:text="${board.subject}"></div>
     <div th:text="${board.content}"></div>
@@ -12,31 +13,64 @@
         <div>현재 모집중인 인원수</div>
         <span >
             모집현황
-            <span th:text="${board.currentNumber}"/>
+            <span th:text="${board.currentNumber}"></span>
             /
-            <span th:text="${board.recruitNumber}"/>
+            <span th:text="${board.recruitNumber}"></span>
         </span>
     </div>
 
     <div>
         <div>소모임 진행기간</div>
         <span>
-            <span th:text="${board.startDay}"/>
+            <span th:text="${board.startDay}"></span>
             ~
-            <span th:text="${board.endDay}"/>
+            <span th:text="${board.endDay}"></span>
         </span>
     </div>
 
     <div>
         <div>소모임 진행 구역</div>
-        <div th:text="${board.region}"/>
+        <div th:text="${board.region}"></div>
     </div>
 
     <div>
         <div>이런 사람들에게 추천해요!</div>
-        <div th:text="${board.recommendedTo}"/>
+        <div th:text="${board.recommendedTo}"></div>
     </div>
 
-    <button type="submit" >참여하기</button>
+    <form th:action="@{|/participations/create/${board.id}|}" method="post">
+        <input type="submit" value="참여하기">
+    </form>
+
+    <div>
+        <div>참여신청 인원(<span th:text="${board.participations.size()}"/>명)</div>
+        <ul>
+            <li th:each="participation : ${board.participations}">
+                <div>
+                    <span th:text="${participation.participant.username}"></span>
+                    <span th:text="${participation.participant.contactNumber}"></span>
+                    <span th:text="${participation.getStatusDisplay()}"></span>
+
+                    <!-- 게시글 작성자일 경우 수락/거절 버튼 -->
+                    <div th:if="${#authentication.principal.username == board.user.username}">
+                        <form th:action="@{|/participations/accept/${participation.id}|}" method="post">
+                            <input type="submit" value="수락하기">
+                        </form>
+                        <form th:action="@{|/participations/reject/${participation.id}|}" method="post">
+                            <input type="submit" value="거절하기">
+                        </form>
+                    </div>
+
+                    <!-- 참여자 본인일 경우 신청 취소 버튼 -->
+                    <div th:if="${#authentication.principal.username == participation.participant.username}">
+                        <form th:action="@{|/participations/cancel/${participation.id}|}" method="post">
+                            <input type="submit" value="신청취소">
+                        </form>
+                    </div>
+                </div>
+            </li>
+        </ul>
+    </div>
 </div>
+</body>
 </html>

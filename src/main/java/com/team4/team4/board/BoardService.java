@@ -1,10 +1,10 @@
 package com.team4.team4.board;
 
+import com.team4.team4.participation.Participation;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import com.team4.team4.DataNotFoundException;
-import com.team4.team4.comment.Comment;
 import com.team4.team4.user.SiteUser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -37,7 +37,7 @@ public class BoardService {
 
     public void create (BoardForm boardForm, SiteUser siteUser) {
         System.out.println("service - boardForm: " + boardForm.getRegion() + boardForm.getStartDay());
-        List<Comment> comments = new ArrayList<Comment>();
+        List<Participation> comments = new ArrayList<Participation>();
 
         Board newBoard = new Board();
         newBoard.setContent(boardForm.getContent());
@@ -49,7 +49,7 @@ public class BoardService {
         newBoard.setRecruitNumber(boardForm.getRecruitNumber());
         newBoard.setCurrentNumber(0);
         newBoard.setRecommendedTo(boardForm.getRecommendedTo());
-        newBoard.setComments(comments);
+        newBoard.setParticipations(comments);
 
 
         this.boardRepository.save(newBoard);
