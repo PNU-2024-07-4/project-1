@@ -1,5 +1,6 @@
 <!-- board_detail.html -->
-<html layout:decorate="~{layout}" xmlns:layout="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html layout:decorate="~{layout}" xmlns:layout="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
     <title>board 생성</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
@@ -47,11 +48,18 @@
     </div>
     </div>
 
-    <form th:action="@{|/participations/create/${board.id}|}" method="post">
-          <button type="submit" class="btn btn-primary w-full text-sm">참여하기</button>
-    </form>
+    <div sec:authorize="isAuthenticated()"  th:if="${ #authentication.principal.username == board.user.username}">
+        <form th:action="@{|/board/edit/${board.id}|}" method="post">
+            <button type="submit" class="btn btn-secondary w-full text-sm">글 수정하기</button>
+        </form>
+    </div>
+    <div sec:authorize="isAuthenticated()" th:if="${#authentication.principal == null or #authentication.principal.username != board.user.username}">
+        <form th:action="@{|/participations/create/${board.id}|}" method="post">
+            <button type="submit" class="btn btn-primary w-full text-sm">참여하기</button>
+        </form>
+    </div>
 
-    <div>
+    <div >
         <div>참여신청 인원(<span th:text="${board.participations.size()}"/>명)</div>
         <ul>
             <li th:each="participation : ${board.participations}">
@@ -61,7 +69,7 @@
                     <span th:text="${participation.getStatusDisplay()}"></span>
 
                     <!-- 게시글 작성자일 경우 수락/거절 버튼 -->
-                    <div th:if="${#authentication.principal.username == board.user.username}">
+                    <div sec:authorize="isAuthenticated()" th:if="${#authentication.principal.username == board.user.username}">
                         <form th:action="@{|/participations/accept/${participation.id}|}" method="post">
                             <input type="submit" value="수락하기">
                         </form>
@@ -71,7 +79,7 @@
                     </div>
 
                     <!-- 참여자 본인일 경우 신청 취소 버튼 -->
-                    <div th:if="${#authentication.principal.username == participation.participant.username}">
+                    <div sec:authorize="isAuthenticated()" th:if="${#authentication.principal != null and #authentication.principal.username == participation.participant.username}">
                         <form th:action="@{|/participations/cancel/${participation.id}|}" method="post">
                             <input type="submit" value="신청취소">
                         </form>

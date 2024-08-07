@@ -50,10 +50,17 @@ public class BoardService {
         newBoard.setCurrentNumber(0);
         newBoard.setRecommendedTo(boardForm.getRecommendedTo());
         newBoard.setParticipations(comments);
-
-
         this.boardRepository.save(newBoard);
+    }
 
+    public void edit(Board board, BoardForm boardForm){
+        board.setSubject(boardForm.getSubject());
+        board.setContent(boardForm.getContent());
+        board.setStartDay(boardForm.getStartDay());
+        board.setEndDay(boardForm.getEndDay());
+        board.setRegion(boardForm.getRegion());
+        board.setRecruitNumber(boardForm.getRecruitNumber());
+        board.setRecommendedTo(boardForm.getRecommendedTo());
     }
 
 }
