@@ -40,4 +40,8 @@ public class UserService {
         siteUser.setSocialMediaHandles(socialMediaHandle);
         this.userRepository.save(siteUser);
     }
+
+    public SiteUser findByUsername(String username) {
+        return  userRepository.findByusername(username).orElseThrow(()-> new RuntimeException("user not found"));
+    }
 }

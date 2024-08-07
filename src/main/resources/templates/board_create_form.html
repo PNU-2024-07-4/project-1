@@ -5,12 +5,13 @@
 <div layout:fragment="content">
     <div>
         <div>
-            <form th:action="@{/board/create}" method="post">
+            <form th:action="@{/board/create}" th:object="${boardForm}" method="post">
 
                 <!-- 오류 메시지 -->
-                <div th:if="${param.error}">
-                    빈칸 없이 작성해주세요
+                <div role="alert" th:if="${#fields.hasAnyErrors()}">
+                    <div th:each="err : ${#fields.allErrors()}" th:text="${err}"/>
                 </div>
+
                 <div class="flex flex-col p-5 gap-6">
                     <div class="flex justify-center">
                         <div class="text-lg font-bold">어떤 소모임을 생성하시나요?</div>
@@ -18,19 +19,19 @@
 
                     <div>
                         <label class="form-control w-full">
-                            <div class="label">
+                            <div class="label" th:for="*{subject}">
                                 <span class="label-text font-bold">게시판 이름을 작성해주세요</span>
                             </div>
-                            <input type="text" id="subject" placeholder="게시판 이름입니다." class="input input-bordered input-sm w-full" />
+                            <input th:field="*{subject}" required type="text" id="subject" placeholder="게시판 이름입니다." class="input input-bordered input-sm w-full" />
                         </label>
                     </div>
 
                     <div>
                         <label class="form-control w-full">
-                            <div class="label">
+                            <div class="label" th:for="*{content}">
                                 <span class="label-text font-bold">게시판 설명글을 작성해주세요</span>
                             </div>
-                            <textarea id="content" class="textarea textarea-bordered h-28 w-full" placeholder="게시판 설명글입니다. 250자 이하로 작성해주세요"></textarea>
+                            <textarea id="content" th:field="*{content}" required class="textarea textarea-bordered h-28 w-full" placeholder="게시판 설명글입니다. 250자 이하로 작성해주세요"></textarea>
                         </label>
                     </div>
 
@@ -38,43 +39,43 @@
                         <div class="label-text font-bold">소모임 시작 날자와 종료 날자를 입력해주세요</div>
 
                         <label class="form-control w-full">
-                            <div class="label">
+                            <div class="label" th:for="*{startDay}">
                                 <span class="label-text font-bold">시작 날짜</span>
                             </div>
-                            <input class="input input-bordered input-sm w-full" type="datetime-local" name="startDay" id="startDay" placeholder="시작날자 (ex.2024.08.01)" />
+                            <input th:field="*{startDay}" class="input input-bordered input-sm w-full" type="date" name="startDay" id="startDay" placeholder="시작날자 (ex.2024.08.01)" />
                         </label>
                         <label class="form-control w-full">
-                            <div class="label">
+                            <div class="label" th:for="*{endDay}">
                                 <span class="label-text font-bold">종료 날짜</span>
                             </div>
-                            <input class="input input-bordered input-sm w-full" type="datetime-local" name="endDay" id="endDay" placeholder="종료날자 (ex.2024.08.02)" />
+                            <input th:field="*{endDay}" class="input input-bordered input-sm w-full" type="date" name="endDay" id="endDay" placeholder="종료날자 (ex.2024.08.02)" />
                         </label>
                     </div>
 
                     <div>
                         <label class="form-control w-full">
-                            <div class="label">
+                            <div class="label" th:for="*{region}">
                                 <span class="label-text font-bold">소모임이 진행되는 지역을 알려주세요</span>
                             </div>
-                            <input type="text" id="region" placeholder="ex) 부산시 금정구" class="input input-bordered input-sm w-full" />
+                            <input th:field="*{region}" required type="text" id="region" placeholder="ex) 부산시 금정구" class="input input-bordered input-sm w-full" />
                         </label>
                     </div>
 
                     <div>
                         <label class="form-control w-full">
-                            <div class="label">
+                            <div class="label" th:for="*{recruitNumber}">
                                 <span class="label-text font-bold">필요한 전체 인원수를 작성해주세요</span>
                             </div>
-                            <input type="number" id="recruitNumber" placeholder="필요한 인원수" class="input input-bordered input-sm w-full" />
+                            <input th:field="*{recruitNumber}" type="number" id="recruitNumber" placeholder="필요한 인원수" class="input input-bordered input-sm w-full" />
                         </label>
                     </div>
 
                     <div>
                         <label class="form-control w-full">
-                            <div class="label">
+                            <div class="label" th:for="*{recommendedTo}">
                                 <span class="label-text font-bold">추천하는 나이대가 있으신가요?</span>
                             </div>
-                            <input type="text" id="recommendedTo" placeholder="20-24살 남자인원" class="input input-bordered input-sm w-full" />
+                            <input th:field="*{recommendedTo}" required type="text" id="recommendedTo" placeholder="20-24살 남자인원" class="input input-bordered input-sm w-full" />
                         </label>
                     </div>
 
@@ -82,7 +83,7 @@
 
                     <div class="flex justify-between gap-2 mb-5">
                         <a th:href="@{/}" class="btn btn-outline btn-error btn-sm w-[47%]">취소</a>
-                        <button type="submit" class="btn btn-outline btn-success btn-sm w-[47%]">생성</button>
+                        <input type="submit" value="생성" class="btn btn-outline btn-success btn-sm w-[47%]"/>
                     </div>
                 </div>
             </form>
