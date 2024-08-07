@@ -21,8 +21,9 @@ public class BoardService {
         this.boardRepository = boardRepository;
     }
 
-    public List<Board> getAllBoards() {
-        return boardRepository.findAll();
+    public Page<Board> getAllBoards(int page) {
+        Pageable pageable = PageRequest.of(page, 3);
+        return this.boardRepository.findAll(pageable);
     }
 
     public Board getBoard(Long id) {

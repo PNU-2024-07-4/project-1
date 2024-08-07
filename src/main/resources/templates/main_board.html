@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html layout:decorate="~{layout}" xmlns:layout="http://www.w3.org/1999/xhtml" xmlns:th="http://www.w3.org/1999/xhtml">
-<div layout:fragment="content">
-
+<html layout:decorate="~{layout}" xmlns:layout="http://www.w3.org/1999/xhtml" xmlns:th="http://www.w3.org/1999/xhtml"
+      xmlns="http://www.w3.org/1999/html">
+    <div layout:fragment="content">
     <!--게시글 목록-->
     <div class="posts-container">
-        <th:block th:each="board : ${boards}">
+        <th:block th:each="board, loop : ${paging}">
             <div class="post">
                 <h2 class="post-author" th:text="${board.user.username}">작성자</h2>
                 <h2 class="post-title" th:text="${board.subject}">게시글 제목</h2>
@@ -18,10 +18,26 @@
     </div>
 
     <!--페이징-->
-    <div class="pagination">
-        <button onclick="changePage(-1)">Previous</button>
-        <span id="page-number">1</span>
-        <button onclick="changePage(1)">Next</button>
+    <div th:if="${!paging.isEmpty()}">
+        <ul class="pagination justify-content-center">
+            <li class="page-item" th:classappend="${!paging.hasPrevious} ? 'disabled'">
+                <a class="page-link"
+                   th:href="@{|?page=${paging.number-1}|}">
+                    <button>이전</button>
+                </a>
+            </li>
+            <li th:each="page: ${#numbers.sequence(0, paging.totalPages-1)}"
+                th:if="${page >= paging.number-5 and page <= paging.number+5}"
+                th:classappend="${page == paging.number} ? 'active'"
+                class="page-item">
+                <a th:text="${page}" class="page-link" th:href="@{|?page=${page}|}"></a>
+            </li>
+            <li class="page-item" th:classappend="${!paging.hasNext} ? 'disabled'">
+                <a class="page-link" th:href="@{|?page=${paging.number+1}|}">
+                    <button>다음</button>
+                </a>
+            </li>
+        </ul>
     </div>
 
     <form th:action="@{/board/create}" method="get" class="space-y-4">
