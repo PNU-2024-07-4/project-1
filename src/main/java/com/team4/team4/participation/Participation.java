@@ -24,6 +24,7 @@ public class Participation {
   @JoinColumn(name = "participantId", nullable = false)
   private SiteUser participant;
 
+  @Enumerated(EnumType.ORDINAL)
   @Column(nullable = false)
   private ParticipationStatus status;
 
@@ -36,4 +37,17 @@ public class Participation {
 
   @Column
   private LocalDateTime responseDate;
+
+  public String getStatusDisplay() {
+    switch (this.status) {
+      case PENDING:
+        return "수락 대기중";
+      case APPROVED:
+        return "수락됨";
+      case REJECTED:
+        return "거절됨";
+      default:
+        return "알 수 없음";
+    }
+  }
 }
