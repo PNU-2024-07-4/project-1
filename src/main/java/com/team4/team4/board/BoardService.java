@@ -7,8 +7,10 @@ import org.springframework.data.domain.Pageable;
 import com.team4.team4.DataNotFoundException;
 import com.team4.team4.user.SiteUser;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -22,7 +24,9 @@ public class BoardService {
 
 
     public Page<Board> getAllBoards(int page) {
-        Pageable pageable = PageRequest.of(page, 3);
+        List<Sort.Order> sites = new ArrayList<>();
+        sites.add(Sort.Order.desc("createDate"));
+        Pageable pageable = PageRequest.of(page, 3, Sort.by(sites));
         return this.boardRepository.findAll(pageable);
     }
 
@@ -50,6 +54,7 @@ public class BoardService {
         newBoard.setCurrentNumber(0);
         newBoard.setRecommendedTo(boardForm.getRecommendedTo());
         newBoard.setParticipations(comments);
+        newBoard.setCreateDate(LocalDateTime.now());
         this.boardRepository.save(newBoard);
     }
 

@@ -50,6 +50,8 @@ public class Board {
   @OneToMany(mappedBy = "board")
   private List<Participation> participations;
 
+  private LocalDateTime createDate;
+
   public String getFormattedStartDay() {
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy.MM.dd");
     return startDay.format(formatter);
