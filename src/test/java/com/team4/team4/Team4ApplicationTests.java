@@ -46,6 +46,7 @@ class Team4ApplicationTests {
             board.setRecruitNumber(random.nextInt(50) + 1);
             board.setCurrentNumber(random.nextInt(10));
             board.setRecommendedTo("대상 " + (random.nextInt(5) + 1));
+            board.setCreateDate(LocalDateTime.now());
             this.boardRepository.save(board);
         }
     }
