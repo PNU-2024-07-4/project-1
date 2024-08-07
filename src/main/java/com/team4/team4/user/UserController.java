@@ -7,12 +7,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.security.Principal;
-import java.util.Optional;
 
 @RequiredArgsConstructor
 @Controller
@@ -39,11 +37,11 @@ public class UserController {
             userService.create(userCreateForm.getUsername(),
                     userCreateForm.getEmail(), userCreateForm.getPassword1(), userCreateForm.getBio(),
                     userCreateForm.getContactNumber(), userCreateForm.getSocialMediaHandles());
-        }catch(DataIntegrityViolationException e) {
+        } catch (DataIntegrityViolationException e) {
             e.printStackTrace();
             bindingResult.reject("signupFailed", "이미 등록된 사용자입니다.");
             return "signup_form";
-        }catch(Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
             bindingResult.reject("signupFailed", e.getMessage());
             return "signup_form";
@@ -83,7 +81,7 @@ public class UserController {
             return "profile_modify";
         }
 
-        this.userService.modify(loggedInUser, userModifyForm.getBio(),userModifyForm.getContactNumber(),userModifyForm.getSocialMediaHandles());
+        this.userService.modify(loggedInUser, userModifyForm.getBio(), userModifyForm.getContactNumber(), userModifyForm.getSocialMediaHandles());
         return "redirect:/user/profile/modify";
     }
 }
