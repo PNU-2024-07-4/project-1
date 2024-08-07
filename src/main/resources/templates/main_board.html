@@ -1,51 +1,68 @@
 <!DOCTYPE html>
-<html layout:decorate="~{layout}" xmlns:layout="http://www.w3.org/1999/xhtml" xmlns:th="http://www.w3.org/1999/xhtml"
-      xmlns="http://www.w3.org/1999/html">
-    <div layout:fragment="content">
-    <!--게시글 목록-->
-    <div class="posts-container">
+<html layout:decorate="~{layout}" lang="en" xmlns:th="" xmlns:layout="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Board</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@latest/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@latest/dist/full.css" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body>
+<div layout:fragment="content" class="container my-3 mx-auto max-w-lg p-4">
+    <!-- 게시글 목록 -->
+    <div class="posts-container space-y-4">
         <th:block th:each="board, loop : ${paging}">
-            <div class="post">
-                <h2 class="post-author" th:text="${board.user.username}">작성자</h2>
-                <h2 class="post-title" th:text="${board.subject}">게시글 제목</h2>
-                <p class="post-content" th:text="${board.content}">게시글 내용</p>
-                <p class="post-status">모집현황: <span
-                        th:text="${board.currentNumber} + '/' +  ${board.recruitNumber}"></span></p>
-                <p class="post-period" th:text="${board.startDay} + ' ~ ' + ${board.endDay}">모집기간</p>
-                <p class="post-location" th:text="${board.region}">지역</p>
+            <div class="post bg-white shadow-md rounded-lg p-4">
+                <h2 class="post-author text-lg font-semibold" th:text="${board.user.username}">작성자</h2>
+                <a class="post-title text-xl font-bold mt-2" th:text="${board.subject}" th:href="@{|/board/detail/${board.id}|}">게시글 제목</a>
+                <p class="post-content mt-2" th:text="${board.content}">게시글 내용</p>
+                <div class="flex flex-col space-y-2 mt-2">
+                    <p class="text-red-600 text-xs">
+                        모집현황: <span th:text="${board.currentNumber} + '/' + ${board.recruitNumber}"></span>
+                    </p>
+                    <p class="post-period text-neutral-500 text-xs">
+                        모집기간: <span th:text="${board.startDay} + ' ~ ' + ${board.endDay}"></span>
+                    </p>
+                    <p class="post-location text-neutral-500 text-xs">
+                        지역: <span th:text="${board.region}"></span>
+                    </p>
+                </div>
             </div>
         </th:block>
     </div>
 
-    <!--페이징-->
-    <div th:if="${!paging.isEmpty()}">
-        <ul class="pagination justify-content-center">
-            <li class="page-item" th:classappend="${!paging.hasPrevious} ? 'disabled'">
-                <a class="page-link"
-                   th:href="@{|?page=${paging.number-1}|}">
-                    <button>이전</button>
+    <!-- 페이징 -->
+    <div th:if="${!paging.isEmpty()}" class="mt-4">
+        <ul class="pagination flex justify-center space-x-2">
+            <!-- 이전 버튼 -->
+            <li class="page-item">
+                <a class="btn btn-primary" th:classappend="${!paging.hasPrevious} ? 'btn-disabled'" th:href="@{|?page=${paging.number-1}|}">
+                    이전
                 </a>
             </li>
-            <li th:each="page: ${#numbers.sequence(0, paging.totalPages-1)}"
-                th:if="${page >= paging.number-5 and page <= paging.number+5}"
-                th:classappend="${page == paging.number} ? 'active'"
+            <!-- 페이지 번호 버튼들 -->
+            <li th:each="page : ${#numbers.sequence(paging.number - 2, paging.number + 2)}"
+                th:if="${page >= 0 and page < paging.totalPages}"
+                th:classappend="${page == paging.number} ? 'btn-active'"
                 class="page-item">
-                <a th:text="${page}" class="page-link" th:href="@{|?page=${page}|}"></a>
+                <a th:text="${page + 1}" class="btn" th:href="@{|?page=${page}|}"></a>
             </li>
-            <li class="page-item" th:classappend="${!paging.hasNext} ? 'disabled'">
-                <a class="page-link" th:href="@{|?page=${paging.number+1}|}">
-                    <button>다음</button>
+            <!-- 다음 버튼 -->
+            <li class="page-item">
+                <a class="btn btn-primary" th:classappend="${!paging.hasNext} ? 'btn-disabled'" th:href="@{|?page=${paging.number+1}|}">
+                    다음
                 </a>
             </li>
         </ul>
     </div>
 
-    <form th:action="@{/board/create}" method="get" class="space-y-4">
-        <button type="submit">게시판 바로가기</button>
-    </form>
-    <form th:action="@{/board/detail/1}" method="get" class="space-y-4">
-        <button type="submit">게시판 상세 바로가기</button>
-    </form>
-
+    <div class="mt-4 flex justify-center space-x-4">
+        <form th:action="@{/board/create}" method="get">
+            <button type="submit" class="btn btn-primary">소모임 생성하기</button>
+        </form>
+    </div>
 </div>
+
+</body>
 </html>

@@ -2,9 +2,13 @@ package com.team4.team4.user;
 
 import com.team4.team4.DataNotFoundException;
 import lombok.RequiredArgsConstructor;
+import lombok.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.swing.*;
+import java.io.File;
 import java.util.Optional;
 
 @RequiredArgsConstructor

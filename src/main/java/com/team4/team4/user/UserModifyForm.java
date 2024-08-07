@@ -4,6 +4,7 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.web.multipart.MultipartFile;
 
 @Getter
 @Setter
@@ -17,4 +18,6 @@ public class UserModifyForm {
 
     @Size(max = 255, message = "SNS 계정은 최대 255자까지 입력 가능합니다.")
     private String socialMediaHandles;  // SNS 계정
+
+    private String profilePicture;
 }

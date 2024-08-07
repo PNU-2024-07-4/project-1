@@ -2,44 +2,53 @@
 <html layout:decorate="~{layout}" xmlns:layout="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>board 생성</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 </head>
 <body>
 <div layout:fragment="content">
-    <div th:text="${board.subject}"></div>
-    <div th:text="${board.content}"></div>
+    <div class="w-full text-left">
+    <div class="text-center mb-6">
+        <h3 class="text-lg font-bold text-gray-800 mb-2" th:text="${board.subject}"></h3>
+        <div class="indicator">
+            <div class="card border w-full rounded-lg">
+                <div class="card-body bg-gray-100">
+                    <p class="text-gray-600 text-sm" th:text="${board.content}"></p>
+                </div>
+            </div>
+        </div>
+    </div>
     <!-- 상세정보 -->
-
-    <div>
-        <div>현재 모집중인 인원수</div>
-        <span >
+    <div class="text-center mb-6">
+        <h3 class="text-sm font-semibold text-gray-800 mb-2">현재 모집중인 인원수</h3>
+        <p class="text-center text-sm">
             모집현황
-            <span th:text="${board.currentNumber}"></span>
+            <span class="font-bold text-gray-600 text-sm" th:text="${board.currentNumber}"></span>
             /
-            <span th:text="${board.recruitNumber}"></span>
-        </span>
+            <span class="font-bold text-gray-600 text-sm" th:text="${board.recruitNumber}"></span>
+        </p>
     </div>
 
-    <div>
-        <div>소모임 진행기간</div>
-        <span>
-            <span th:text="${board.startDay}"></span>
+    <div class="text-center mb-6">
+        <h3 class="text-sm font-semibold text-gray-800 mb-2">소모임 진행기간</h3>
+        <p class="text-center text-sm">
+            <span class="text-gray-600 text-sm" th:text="${board.getFormattedStartDay}"></span>
             ~
-            <span th:text="${board.endDay}"></span>
-        </span>
+            <span class="text-gray-600 text-sm" th:text="${board.getFormattedEndDay}"></span>
+        </p>
+    </div>
+    <div class="text-center mb-6">
+        <h3 class="text-sm font-semibold text-gray-800 mb-2">소모임 진행 구역</h3>
+        <p class="text-center text-sm text-gray-700" th:text="${board.region}"></p>
     </div>
 
-    <div>
-        <div>소모임 진행 구역</div>
-        <div th:text="${board.region}"></div>
+    <div class="text-center mb-6">
+        <h3 class="text-sm font-semibold text-gray-800 mb-2">이런 사람들에게 추천해요!</h3>
+        <p class="text-center text-sm text-gray" th:text="${board.recommendedTo}"></p>
     </div>
-
-    <div>
-        <div>이런 사람들에게 추천해요!</div>
-        <div th:text="${board.recommendedTo}"></div>
     </div>
 
     <form th:action="@{|/participations/create/${board.id}|}" method="post">
-        <input type="submit" value="참여하기">
+          <button type="submit" class="btn btn-primary w-full text-sm">참여하기</button>
     </form>
 
     <div>
