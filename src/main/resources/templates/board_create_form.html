@@ -1,0 +1,92 @@
+<html layout:decorate="~{layout}" xmlns:layout="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>board 생성</title>
+</head>
+<div layout:fragment="content">
+    <div>
+        <div>
+            <form th:action="@{/board/create}" method="post">
+
+                <!-- 오류 메시지 -->
+                <div th:if="${param.error}">
+                    빈칸 없이 작성해주세요
+                </div>
+                <div class="flex flex-col p-5 gap-6">
+                    <div class="flex justify-center">
+                        <div class="text-lg font-bold">어떤 소모임을 생성하시나요?</div>
+                    </div>
+
+                    <div>
+                        <label class="form-control w-full">
+                            <div class="label">
+                                <span class="label-text font-bold">게시판 이름을 작성해주세요</span>
+                            </div>
+                            <input type="text" id="subject" placeholder="게시판 이름입니다." class="input input-bordered input-sm w-full" />
+                        </label>
+                    </div>
+
+                    <div>
+                        <label class="form-control w-full">
+                            <div class="label">
+                                <span class="label-text font-bold">게시판 설명글을 작성해주세요</span>
+                            </div>
+                            <textarea id="content" class="textarea textarea-bordered h-28 w-full" placeholder="게시판 설명글입니다. 250자 이하로 작성해주세요"></textarea>
+                        </label>
+                    </div>
+
+                    <div>
+                        <div class="label-text font-bold">소모임 시작 날자와 종료 날자를 입력해주세요</div>
+
+                        <label class="form-control w-full">
+                            <div class="label">
+                                <span class="label-text font-bold">시작 날짜</span>
+                            </div>
+                            <input class="input input-bordered input-sm w-full" type="datetime-local" name="startDay" id="startDay" placeholder="시작날자 (ex.2024.08.01)" />
+                        </label>
+                        <label class="form-control w-full">
+                            <div class="label">
+                                <span class="label-text font-bold">종료 날짜</span>
+                            </div>
+                            <input class="input input-bordered input-sm w-full" type="datetime-local" name="endDay" id="endDay" placeholder="종료날자 (ex.2024.08.02)" />
+                        </label>
+                    </div>
+
+                    <div>
+                        <label class="form-control w-full">
+                            <div class="label">
+                                <span class="label-text font-bold">소모임이 진행되는 지역을 알려주세요</span>
+                            </div>
+                            <input type="text" id="region" placeholder="ex) 부산시 금정구" class="input input-bordered input-sm w-full" />
+                        </label>
+                    </div>
+
+                    <div>
+                        <label class="form-control w-full">
+                            <div class="label">
+                                <span class="label-text font-bold">필요한 전체 인원수를 작성해주세요</span>
+                            </div>
+                            <input type="number" id="recruitNumber" placeholder="필요한 인원수" class="input input-bordered input-sm w-full" />
+                        </label>
+                    </div>
+
+                    <div>
+                        <label class="form-control w-full">
+                            <div class="label">
+                                <span class="label-text font-bold">추천하는 나이대가 있으신가요?</span>
+                            </div>
+                            <input type="text" id="recommendedTo" placeholder="20-24살 남자인원" class="input input-bordered input-sm w-full" />
+                        </label>
+                    </div>
+
+                    <div class="border-t border-gray-300"></div>
+
+                    <div class="flex justify-between gap-2 mb-5">
+                        <a th:href="@{/}" class="btn btn-outline btn-error btn-sm w-[47%]">취소</a>
+                        <button type="submit" class="btn btn-outline btn-success btn-sm w-[47%]">생성</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+</html>

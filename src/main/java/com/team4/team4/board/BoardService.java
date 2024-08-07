@@ -4,8 +4,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import com.team4.team4.DataNotFoundException;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
 import java.util.List;
 
 @Service
@@ -20,5 +23,14 @@ public class BoardService {
 
     public List<Board> getAllBoards() {
         return boardRepository.findAll();
+    }
+
+    public Board getBoard(Long id) {
+        Optional<Board> board = this.boardRepository.findById(id);
+        if(board.isPresent()) {
+            return board.get();
+        }else {
+            throw new DataNotFoundException("Board not found");
+        }
     }
 }

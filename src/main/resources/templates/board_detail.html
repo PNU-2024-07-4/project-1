@@ -1,0 +1,42 @@
+<html layout:decorate="~{layout}" xmlns:layout="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>board 생성</title>
+</head>
+
+<div layout:fragment="content">
+    <div th:text="${board.subject}"></div>
+    <div th:text="${board.content}"></div>
+    <!-- 상세정보 -->
+
+    <div>
+        <div>현재 모집중인 인원수</div>
+        <span >
+            모집현황
+            <span th:text="${board.currentNumber}"/>
+            /
+            <span th:text="${board.recruitNumber}"/>
+        </span>
+    </div>
+
+    <div>
+        <div>소모임 진행기간</div>
+        <span>
+            <span th:text="${board.startDay}"/>
+            ~
+            <span th:text="${board.endDay}"/>
+        </span>
+    </div>
+
+    <div>
+        <div>소모임 진행 구역</div>
+        <div th:text="${board.region}"/>
+    </div>
+
+    <div>
+        <div>이런 사람들에게 추천해요!</div>
+        <div th:text="${board.recommendedTo}"/>
+    </div>
+
+    <button type="submit" >참여하기</button>
+</div>
+</html>

@@ -1,43 +1,75 @@
-<html layout:decorate="~{layout}" xmlns:th="http://www.w3.org/1999/xhtml" xmlns:layout="http://www.w3.org/1999/xhtml">
-<div layout:fragment="content" class="container my-3">
-    <div class="my-3 border-bottom">
-        <div>
-            <h4>회원가입</h4>
-        </div>
+<!DOCTYPE html>
+<html layout:decorate="~{layout}" xmlns:th="http://www.w3.org/1999/xhtml" xmlns:layout="http://www.w3.org/1999/xhtml"
+      xmlns="http://www.w3.org/1999/html">
+<head>
+    <title>회원가입</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body>
+<div layout:fragment="content" class="container my-3 mx-auto max-w-lg p-4">
+    <div class="my-3 border-b pb-2 text-center">
+        <h4 class="text-xl font-semibold">회원가입</h4>
     </div>
-    <form th:action="@{/user/signup}" th:object="${userCreateForm}" method="post">
+    <form th:action="@{/user/signup}" th:object="${userCreateForm}" method="post" class="space-y-4">
         <div th:replace="~{form_errors :: formErrorsFragment}"></div>
-        <div class="mb-3">
-            <label for="username" id="username" class="form-label">사용자ID</label>
-            <input type="text" th:field="*{username}" class="form-control">
+        <div class="mb-3 flex justify-center">
+            <label for="username" id="username" class="form-control w-full max-w-xs">
+                <div class="label">
+                <span class="label-text">사용자ID</span>
+                </div>
+                <input type="text" th:field="*{username}" placeholder="사용자ID" class="input input-bordered w-full max-w-xs">
+            </label>
         </div>
-        <div class="mb-3">
-            <label for="password1" id="password1" class="form-label">비밀번호</label>
-            <input type="password" th:field="*{password1}" class="form-control">
+        <div class="mb-3 flex justify-center">
+            <label for="password1" id="password1" class="form-control w-full max-w-xs">
+                <div class="label">
+                <span class="label-text">비밀번호</span>
+                </div>
+            <input type="password" th:field="*{password1}" placeholder="비밀번호" class="input input-bordered w-full max-w-xs">
+            </label>
         </div>
-        <div class="mb-3">
-            <label for="password2" id="password2" class="form-label">비밀번호 확인</label>
-            <input type="password" th:field="*{password2}" class="form-control">
+        <div class="mb-3 flex justify-center">
+            <label for="password2" id="password2" class="form-control w-full max-w-xs">
+                <div class="label">
+                    <span class="label-text">비밀번호 확인</span>
+                </div>
+            <input type="password" th:field="*{password2}" placeholder="비밀번호 확인" class="input input-bordered w-full max-w-xs">
+        </label>
         </div>
-        <div class="mb-3">
-            <label for="email" id="email" class="form-label">이메일</label>
-            <input type="email" th:field="*{email}" class="form-control">
+            <div class="mb-3 flex justify-center">
+            <label for="email" id="email" class="form-control w-full max-w-xs">
+                <div class="label">
+                    <span class="label-text">이메일</span>
+                </div>
+            <input type="email" th:field="*{email}" placeholder="이메일" class="input input-bordered w-full max-w-xs">
+            </label>
         </div>
-        <div class="mb-3">
-            <label for="contactNumber" id="contactNumber" class="form-label">연락처</label>
-            <input type="text" th:field="*{contactNumber}" class="form-control">
+            <div class="mb-3 flex justify-center">
+            <label for="contactNumber" id = "contactNumber" class="form-control w-full max-w-xs">
+                <div class="label">
+                    <span class="label-text">연락처</span>
+                </div>
+                <input type="text" th:field="*{contactNumber}" placeholder="'-'를 제외하고 입력해주세요" class="input input-bordered w-full max-w-xs">
+            </label>
         </div>
-
-        <div class="mb-3">
-            <label for="bio" id="bio" class="form-label">자기소개</label>
-            <textarea type="bio" th:field="*{bio}" class="form-control" rows="4"></textarea>
+            <div class="mb-3 flex justify-center">
+            <label for="bio" id="bio" class="form-control w-full max-w-xs">
+                <div class="label">
+                    <span class="label-text">자기소개</span>
+                </div>
+            <textarea th:field="*{bio}" class="textarea textarea-bordered" rows="4" placeholder="200자내로 입력해주세요"></textarea>
+            </label>
         </div>
-
-        <div class="mb-3">
-            <label for="socialMediaHandles" id="socialMediaHandles" class="form-label">SNS 계정</label>
-            <input type="text" th:field="*{socialMediaHandles}" class="form-control">
+            <div class="mb-3 flex justify-center">
+            <label for="socialMediaHandles" id="socialMediaHandles" class="form-control w-full max-w-xs">
+                <div class="label">
+                    <span class="label-text">SNS 계정</span>
+                </div>
+            <input type="text" th:field="*{socialMediaHandles}" placeholder="SNS 계정" class="input input-bordered w-full max-w-xs">
+            </label>
         </div>
-        <button type="submit" class="btn btn-primary">회원가입</button>
+        <button type="submit" class="btn btn-primary w-full">회원가입</button>
     </form>
 </div>
+</body>
 </html>

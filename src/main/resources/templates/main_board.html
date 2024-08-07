@@ -1,50 +1,35 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html layout:decorate="~{layout}" xmlns:layout="http://www.w3.org/1999/xhtml" xmlns:th="http://www.w3.org/1999/xhtml">
+<div layout:fragment="content">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AppName</title>
-    <link rel="stylesheet" href="style.css">
-</head>
-
-<body>
-<!--네이게이션-->
-<nav class="navbar">
-    <div class="menu-icon">&#9776;</div>
-    <div class="app-name">AppName</div>
-    <div class="profile-icon">
-        <img src="https://via.placeholder.com/24" alt="Profile Icon">
+    <!--게시글 목록-->
+    <div class="posts-container">
+        <th:block th:each="board : ${boards}">
+            <div class="post">
+                <h2 class="post-author" th:text="${board.user.username}">작성자</h2>
+                <h2 class="post-title" th:text="${board.subject}">게시글 제목</h2>
+                <p class="post-content" th:text="${board.content}">게시글 내용</p>
+                <p class="post-status">모집현황: <span
+                        th:text="${board.currentNumber} + '/' +  ${board.recruitNumber}"></span></p>
+                <p class="post-period" th:text="${board.startDay} + ' ~ ' + ${board.endDay}">모집기간</p>
+                <p class="post-location" th:text="${board.region}">지역</p>
+            </div>
+        </th:block>
     </div>
-</nav>
 
-<!--게시글 목록-->
-<div class="posts-container">
-    <th:block th:each="board : ${boards}">
-        <div class="post">
-            <h2 class="post-author" th:text="${board.user.username}">작성자</h2>
-            <h2 class="post-title" th:text="${board.subject}">게시글 제목</h2>
-            <p class="post-content" th:text="${board.content}">게시글 내용</p>
-            <p class="post-status">모집현황: <span
-                    th:text="${board.currentNumber} + '/' +  ${board.recruitNumber}"></span></p>
-            <p class="post-period" th:text="${board.startDay} + ' ~ ' + ${board.endDay}">모집기간</p>
-            <p class="post-location" th:text="${board.region}">지역</p>
-        </div>
-    </th:block>
+    <!--페이징-->
+    <div class="pagination">
+        <button onclick="changePage(-1)">Previous</button>
+        <span id="page-number">1</span>
+        <button onclick="changePage(1)">Next</button>
+    </div>
+
+    <form th:action="@{/board/create}" method="get" class="space-y-4">
+        <button type="submit">게시판 바로가기</button>
+    </form>
+    <form th:action="@{/board/detail/1}" method="get" class="space-y-4">
+        <button type="submit">게시판 상세 바로가기</button>
+    </form>
+
 </div>
-
-<!--페이징-->
-<div class="pagination">
-    <button onclick="changePage(-1)">Previous</button>
-    <span id="page-number">1</span>
-    <button onclick="changePage(1)">Next</button>
-</div>
-
-<!--소모임 생성하기 버튼-->
-<div class="create-group">
-    <button id="create-group-button">소모임 생성하기</button>
-</div>
-
-</body>
-
 </html>
