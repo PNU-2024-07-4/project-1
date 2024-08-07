@@ -50,12 +50,12 @@ public class Board {
     private List<Comment> comments;
 
   public String getFormattedStartDay() {
-    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy.MM.dd HH:mm");
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy.MM.dd");
     return startDay.format(formatter);
   }
 
   public String getFormattedEndDay() {
-    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy.MM.dd HH:mm");
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy.MM.dd");
     return endDay.format(formatter);
   }
 }
