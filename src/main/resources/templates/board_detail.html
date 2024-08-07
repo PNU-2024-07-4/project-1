@@ -4,39 +4,40 @@
 </head>
 
 <div layout:fragment="content">
-    <div th:text="${board.subject}"></div>
-    <div th:text="${board.content}"></div>
+    <div class="text-center mb-6">
+        <h1 class="text-2xl font-bold text-gray-800 mb-2" th:text="${board.subject}"></h1>
+        <p class="text-gray-600" th:text="${board.content}"></p>
+    </div>
     <!-- 상세정보 -->
-
-    <div>
-        <div>현재 모집중인 인원수</div>
-        <span >
+    <div class="mb-6">
+        <h2 class="text-xl font-semibold text-gray-800 text-center mb-2">현재 모집중인 인원수</h2>
+        <p class="text-center text-lg">
             모집현황
-            <span th:text="${board.currentNumber}"/>
+            <span class="font-bold text-blue-600" th:text="${board.currentNumber}"></span>
             /
-            <span th:text="${board.recruitNumber}"/>
-        </span>
+            <span class="font-bold text-blue-600" th:text="${board.recruitNumber}"></span>
+        </p>
     </div>
 
-    <div>
-        <div>소모임 진행기간</div>
-        <span>
-            <span th:text="${board.startDay}"/>
+    <div class="mb-6">
+        <h2 class="text-xl font-semibold text-gray-800 text-center mb-2">소모임 진행기간</h2>
+        <p class="text-center text-lg">
+            <span class="font-bold text-blue-600" th:text="${board.startDay}"></span>
             ~
-            <span th:text="${board.endDay}"/>
-        </span>
+            <span class="font-bold text-blue-600" th:text="${board.endDay}"></span>
+        </p>
     </div>
 
-    <div>
-        <div>소모임 진행 구역</div>
-        <div th:text="${board.region}"/>
+    <div class="mb-6">
+        <h2 class="text-xl font-semibold text-gray-800 text-center mb-2">소모임 진행 구역</h2>
+        <p class="text-center text-lg text-gray-700" th:text="${board.region}"></p>
     </div>
 
-    <div>
-        <div>이런 사람들에게 추천해요!</div>
-        <div th:text="${board.recommendedTo}"/>
+    <div class="mb-6">
+        <h2 class="text-xl font-semibold text-gray-800 text-center mb-2">이런 사람들에게 추천해요!</h2>
+        <p class="text-center text-lg text-gray-700" th:text="${board.recommendedTo}"></p>
     </div>
 
-    <button type="submit" >참여하기</button>
+    <button type="submit" class="btn btn-primary w-full">참여하기</button>
 </div>
 </html>
