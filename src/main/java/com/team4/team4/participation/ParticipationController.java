@@ -1,9 +1,12 @@
 package com.team4.team4.participation;
 
+import com.team4.team4.user.SiteUser;
+import com.team4.team4.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
 
@@ -12,6 +15,9 @@ import java.util.Optional;
 public class ParticipationController {
     @Autowired
     private ParticipationService participationService;
+
+    @Autowired
+    private UserService userService;
 
     // 전체 참여 목록 조회 (GET /participations)
     @GetMapping
@@ -28,40 +34,48 @@ public class ParticipationController {
 
     // 참여 신청 생성 (POST /participations)
     @PostMapping
-    public Participation createParticipation(@RequestBody Participation participation) {
-        return participationService.save(participation);
+    public String createParticipation(@RequestParam Long boardId, Principal principal) {
+        SiteUser user = userService.getUser(principal.getName());
+        Participation participation = participationService.createParticipation(boardId, user);
+        if (participation != null) {
+            return "redirect:/board/detail/" + boardId;
+        } else {
+            return "error";
+        }
     }
 
-    // 참여 신청 승인 (PUT /participations/{id}/approve)
-    @PutMapping("/{id}/approve")
-    public ResponseEntity<Participation> approveParticipation(@PathVariable Long id) {
+    // 참여 신청 승인 (POST /participations/{id}/approve)
+    @PostMapping("/{id}/approve")
+    public String approveParticipation(@PathVariable Long id) {
         Participation participation = participationService.approveParticipation(id);
         if (participation != null) {
-            return ResponseEntity.ok(participation);
+            return "redirect:/board/detail/" + participation.getBoard().getId();
         } else {
-            return ResponseEntity.notFound().build();
+            return "error";
         }
     }
 
-    // 참여 신청 거절 (PUT /participations/{id}/reject)
-    @PutMapping("/{id}/reject")
-    public ResponseEntity<Participation> rejectParticipation(@PathVariable Long id) {
+    // 참여 신청 거절 (POST /participations/{id}/reject)
+    @PostMapping("/{id}/reject")
+    public String rejectParticipation(@PathVariable Long id) {
         Participation participation = participationService.rejectParticipation(id);
         if (participation != null) {
-            return ResponseEntity.ok(participation);
+            return "redirect:/board/detail/" + participation.getBoard().getId();
         } else {
-            return ResponseEntity.notFound().build();
+            return "error";
         }
     }
 
-    // 참여 신청 삭제 (DELETE /participations/{id})
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteParticipation(@PathVariable Long id) {
-        if (participationService.findById(id).isPresent()) {
+    // 참여 신청 삭제 (POST /participations/{id})
+    @PostMapping("/{id}")
+    public String deleteParticipation(@PathVariable Long id) {
+        Optional<Participation> participationOptional = participationService.findById(id);
+        if (participationOptional.isPresent()) {
+            Participation participation = participationOptional.get();
             participationService.deleteById(id);
-            return ResponseEntity.ok().build();
+            return "redirect:/board/detail/" + participation.getBoard().getId();
         } else {
-            return ResponseEntity.notFound().build();
+            return "error";
         }
     }
 }

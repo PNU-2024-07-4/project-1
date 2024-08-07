@@ -1,8 +1,9 @@
+<!-- board_detail.html -->
 <html layout:decorate="~{layout}" xmlns:layout="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>board 생성</title>
 </head>
-
+<body>
 <div layout:fragment="content">
     <div th:text="${board.subject}"></div>
     <div th:text="${board.content}"></div>
@@ -37,6 +38,41 @@
         <div th:text="${board.recommendedTo}"/>
     </div>
 
-    <button type="submit" >참여하기</button>
+    <form action="/participations" method="post" th:action="@{/participations}">
+        <input type="hidden" name="boardId" th:value="${board.id}"/>
+        <input type="hidden" name="_csrf" th:value="${_csrf.token}"/>
+        <button type="submit">참여하기</button>
+    </form>
+
+    <div>
+        <div>참여신청 인원(<span th:text="${board.participations.size()}"/>명)</div>
+        <ul>
+            <li th:each="participation : ${board.participations}">
+                <span th:text="${participation.participant.username}"></span>
+                <span th:text="${participation.participant.contactNumber}"></span>
+                <span th:text="${participation.status}"></span>
+                <form th:if="${participation.status == T(com.team4.team4.participation.Participation.ParticipationStatus).PENDING}" th:action="'/participations/' + ${participation.id} + '/approve'" method="post">
+                    <input type="hidden" name="_csrf" th:value="${_csrf.token}"/>
+                    <button type="submit">수락하기</button>
+                </form>
+                <form th:if="${participation.status == T(com.team4.team4.participation.Participation.ParticipationStatus).PENDING}" th:action="'/participations/' + ${participation.id} + '/reject'" method="post">
+                    <input type="hidden" name="_csrf" th:value="${_csrf.token}"/>
+                    <button type="submit">거절하기</button>
+                </form>
+                <form th:if="${participation.status == T(com.team4.team4.participation.Participation.ParticipationStatus).APPROVED}">
+                    (수락됨)
+                </form>
+                <form th:if="${participation.status == T(com.team4.team4.participation.Participation.ParticipationStatus).REJECTED}">
+                    (거절됨)
+                </form>
+                <form th:action="'/participations/' + ${participation.id}" method="post">
+                    <input type="hidden" name="_method" value="delete"/>
+                    <input type="hidden" name="_csrf" th:value="${_csrf.token}"/>
+                    <button type="submit">신청취소</button>
+                </form>
+            </li>
+        </ul>
+    </div>
 </div>
+</body>
 </html>

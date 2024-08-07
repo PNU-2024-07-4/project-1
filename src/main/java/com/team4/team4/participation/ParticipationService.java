@@ -1,5 +1,9 @@
 package com.team4.team4.participation;
 
+import com.team4.team4.board.Board;
+import com.team4.team4.board.BoardRepository;
+import com.team4.team4.user.SiteUser;
+import com.team4.team4.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,6 +15,27 @@ import java.util.Optional;
 public class ParticipationService {
     @Autowired
     private ParticipationRepository participationRepository;
+
+    @Autowired
+    private BoardRepository boardRepository;
+
+    @Autowired
+    private UserRepository userRepository;
+
+    // 참여 신청 생성 및 저장
+    public Participation createParticipation(Long boardId, SiteUser participant) {
+        Optional<Board> boardOptional = boardRepository.findById(boardId);
+        if (boardOptional.isPresent()) {
+            Board board = boardOptional.get();
+            Participation participation = new Participation();
+            participation.setBoard(board);
+            participation.setParticipant(participant);
+            participation.setRequestDate(LocalDateTime.now());
+            participation.setStatus(Participation.ParticipationStatus.PENDING);
+            return participationRepository.save(participation);
+        }
+        return null;
+    }
 
     // 전체 참여 신청 목록 조회
     public List<Participation> findAll() {
