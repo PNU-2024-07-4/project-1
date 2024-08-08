@@ -34,6 +34,22 @@
                 <p th:text="${loggedInUser.socialMediaHandles}" class="text-gray-600 mt-1">SNS 계정</p>
             </div>
         </div>
+        <div class="px-6 py-4 border-t border-gray-200 text-left">
+            <p class="font-medium text-gray-800 text-xs mb-4">
+                <span class="font-semibold">참여신청 게시글</span>
+            </p>
+            <ul class="space-y-4">
+                <li th:each="board : ${boards}" th:if="${!board.participations.isEmpty()}" class="border border-gray-200 rounded-md p-4 shadow-sm hover:bg-gray-50 transition">
+                    <div class="flex items-center space-x-2">
+                        <p th:text="${board.subject}" class="text-black font-bold text-xs font-medium"></p>
+                        <p class="text-gray-600 text-xs inline">에서 참여신청이 들어왔습니다.</p>
+                    </div>
+                    <a th:href="@{|/board/detail/${board.id}|}" class="btn btn-success btn-xs mt-3">
+                        게시글 이동하기
+                    </a>
+                </li>
+            </ul>
+        </div>
         <div class="card-footer text-xs text-center py-5 rounded-b-lg">
             <button class="btn btn-primary"><a th:href="@{/user/profile/modify}">프로필 수정</a></button>
         </div>
