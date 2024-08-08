@@ -3,94 +3,129 @@
       xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
     <title>board 생성</title>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 </head>
 <body>
 <div layout:fragment="content">
-    <div class="w-full text-left">
-    <div class="text-center mb-6">
-        <h3 class="text-lg font-bold text-gray-800 mb-2" th:text="${board.subject}"></h3>
-        <div class="indicator">
-            <div class="card border w-full rounded-lg">
-                <div class="card-body bg-gray-100">
-                    <p class="text-gray-600 text-sm" th:text="${board.content}"></p>
+    <div class="flex flex-col p-5 pb-16 gap-6">
+        <!-- 제목 -->
+        <div>
+            <div class="text-xl font-bold" th:text="${board.subject}"></div>
+        </div>
+        <!-- 내용 -->
+        <div>
+            <div class="min-h-28 text-sm text-[#616161] bg-[#F6F6F6] p-3 rounded-lg" th:text="${board.content}"></div>
+        </div>
+
+        <!-- 모집 인원 -->
+        <div class="flex flex-col gap-1">
+            <div class="text-sm font-bold">현재 모집중인 인원수</div>
+            <div class="flex gap-1 text-sm">
+                <div>모집 현황: </div>
+                <div th:text="${board.currentNumber}"></div>
+                <div>/</div>
+                <div th:text="${board.recruitNumber}"></div>
+            </div>
+        </div>
+
+        <!-- 진행 기간 -->
+        <div class="flex flex-col gap-1">
+            <div class="text-sm font-bold">소모임 진행기간</div>
+            <div class="flex gap-1 text-sm">
+                <div th:text="${board.getFormattedStartDay}"></div>
+                <div>~</div>
+                <div th:text="${board.getFormattedEndDay}"></div>
+            </div>
+        </div>
+
+        <!-- 소모임 진행 지역 -->
+        <div class="flex flex-col gap-1">
+            <div class="text-sm font-bold">소모임 진행 지역</div>
+            <div class="text-sm" th:text="${board.region}"></div>
+        </div>
+
+        <!-- recommend to -->
+        <div class="flex flex-col gap-1">
+            <div class="text-sm font-bold">이런 사람들에게 추천해요!</div>
+            <div class="text-sm" th:text="${board.recommendedTo}"></div>
+        </div>
+
+        <!-- 참여 신청 인원 -->
+        <div class="flex flex-col gap-3">
+            <div class="text-sm font-bold flex">
+                <div>참여 신청 인원(</div>
+                <div th:text="${board.participations.size()}"></div>
+                <div>명)</div>
+            </div>
+            <!-- 참여자 정보 반복 리스트 -->
+            <div th:each="participation : ${board.participations}">
+                <div class="bg-[#F4F4F4] rounded-lg flex p-2 gap-3 items-center">
+                    <div class="border border-black border-solid bg-white h-10 w-10 rounded-full flex items-center justify-center">
+                        <div>
+                            <i class="fa-regular fa-user text-xl"></i>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-col gap-1">
+                        <div class="flex gap-2 text-sm">
+                            <div class="flex gap-1 font-bold ">
+                                <div th:text="${participation.participant.username}"></div>
+                                <div>님</div>
+                            </div>
+                            <div class="flex text-sm" th:classappend="${participation.status.name().toLowerCase() == 'pending' ? 'text-blue-400' : (participation.status.name().toLowerCase() == 'approved' ? 'text-green-500' : (participation.status.name().toLowerCase() == 'rejected' ? 'text-red-400' : ''))}">
+                                <div>(</div>
+                                <div
+                                     th:text="${participation.getStatusDisplay()}">
+                                </div>
+                                <div>)</div>
+                            </div>
+                        </div>
+                        <div class="text-sm" th:text="${participation.participant.contactNumber}"></div>
+
+                        <!-- 게시글 작성자일 경우 수락/거절 버튼 -->
+                        <div class="flex gap-2" sec:authorize="isAuthenticated()" th:if="${#authentication.principal.username == board.user.username}">
+                            <form class="text-sm text-green-500 underline" th:action="@{|/participations/accept/${participation.id}|}" method="post" >
+                                <input class="underline" type="submit" value="수락하기">
+                            </form>
+                            <form class="text-sm text-red-400 underline" th:action="@{|/participations/reject/${participation.id}|}" method="post">
+                                <input class="underline" type="submit" value="거절하기">
+                            </form>
+                        </div>
+
+                        <!-- 참여자 본인일 경우 신청 취소 버튼 -->
+                        <div sec:authorize="isAuthenticated()" th:if="${#authentication.principal != null and #authentication.principal.username == participation.participant.username}">
+                            <form class="text-sm text-red-400" th:action="@{|/participations/cancel/${participation.id}|}" method="post">
+                                <input class="underline" type="submit" value="신청취소">
+                            </form>
+                        </div>
+                    </div>
+
+
                 </div>
             </div>
         </div>
-    </div>
-    <!-- 상세정보 -->
-    <div class="text-center mb-6">
-        <h3 class="text-sm font-semibold text-gray-800 mb-2">현재 모집중인 인원수</h3>
-        <p class="text-center text-sm">
-            모집현황
-            <span class="font-bold text-gray-600 text-sm" th:text="${board.currentNumber}"></span>
-            /
-            <span class="font-bold text-gray-600 text-sm" th:text="${board.recruitNumber}"></span>
-        </p>
-    </div>
 
-    <div class="text-center mb-6">
-        <h3 class="text-sm font-semibold text-gray-800 mb-2">소모임 진행기간</h3>
-        <p class="text-center text-sm">
-            <span class="text-gray-600 text-sm" th:text="${board.getFormattedStartDay}"></span>
-            ~
-            <span class="text-gray-600 text-sm" th:text="${board.getFormattedEndDay}"></span>
-        </p>
-    </div>
-    <div class="text-center mb-6">
-        <h3 class="text-sm font-semibold text-gray-800 mb-2">소모임 진행 구역</h3>
-        <p class="text-center text-sm text-gray-700" th:text="${board.region}"></p>
-    </div>
-
-    <div class="text-center mb-6">
-        <h3 class="text-sm font-semibold text-gray-800 mb-2">이런 사람들에게 추천해요!</h3>
-        <p class="text-center text-sm text-gray" th:text="${board.recommendedTo}"></p>
-    </div>
-    </div>
-
-    <div sec:authorize="isAuthenticated()"  th:if="${ #authentication.principal.username == board.user.username}">
-        <form th:action="@{|/board/edit/${board.id}|}" method="get">
-            <button type="submit" class="btn btn-secondary w-full text-sm">글 수정하기</button>
-        </form>
-        <form th:action="@{|/board/delete/${board.id}|}" method="get">
-            <button type="submit" class="delete btn btn-primary w-full text-sm" >글 삭제하기</button>
-        </form>
-    </div>
-    <div sec:authorize="isAuthenticated()" th:if="${#authentication.principal == null or #authentication.principal.username != board.user.username}">
-        <form th:action="@{|/participations/create/${board.id}|}" method="post">
-            <button type="submit" class="btn btn-primary w-full text-sm">참여하기</button>
-        </form>
-    </div>
-
-    <div >
-        <div>참여신청 인원(<span th:text="${board.participations.size()}"/>명)</div>
-        <ul>
-            <li th:each="participation : ${board.participations}">
-                <div>
-                    <span th:text="${participation.participant.username}"></span>
-                    <span th:text="${participation.participant.contactNumber}"></span>
-                    <span th:text="${participation.getStatusDisplay()}"></span>
-
-                    <!-- 게시글 작성자일 경우 수락/거절 버튼 -->
-                    <div sec:authorize="isAuthenticated()" th:if="${#authentication.principal.username == board.user.username}">
-                        <form th:action="@{|/participations/accept/${participation.id}|}" method="post">
-                            <input type="submit" value="수락하기">
-                        </form>
-                        <form th:action="@{|/participations/reject/${participation.id}|}" method="post">
-                            <input type="submit" value="거절하기">
-                        </form>
-                    </div>
-
-                    <!-- 참여자 본인일 경우 신청 취소 버튼 -->
-                    <div sec:authorize="isAuthenticated()" th:if="${#authentication.principal != null and #authentication.principal.username == participation.participant.username}">
-                        <form th:action="@{|/participations/cancel/${participation.id}|}" method="post">
-                            <input type="submit" value="신청취소">
-                        </form>
-                    </div>
+        <!-- 작성자일 경우 수정하기 버튼, 그 외 유저는 참여하기 버튼 -->
+        <div class="fixed bottom-0 left-0 p-5 w-full">
+            <div class="flex gap-2" sec:authorize="isAuthenticated()"  th:if="${ #authentication.principal.username == board.user.username}">
+                <div class="w-full">
+                    <form class="w-full" th:action="@{|/board/edit/${board.id}|}" method="get">
+                        <button type="submit" class="btn btn-sm btn-neutral btn-block w-full">수정하기</button>
+                    </form>
                 </div>
-            </li>
-        </ul>
-    </div>
+                <div class="w-full" sec:authorize="isAuthenticated()"  th:if="${ #authentication.principal.username == board.user.username}">
+                    <form class="w-full" th:action="@{|/board/delete/${board.id}|}" method="get">
+                        <button type="submit" class="delete btn btn-sm btn-error btn-block  w-full" >삭제하기</button>
+                    </form>
+                </div>
+            </div>
+
+            <div sec:authorize="isAuthenticated()" th:if="${#authentication.principal == null or #authentication.principal.username != board.user.username}">
+                <form th:action="@{|/participations/create/${board.id}|}" method="post">
+                    <button type="submit" class="btn h-10 bg-[#5B5FC7] w-full text-sm">나도 참여하기</button>
+                </form>
+            </div>
+
+        </div>
 </div>
 <script layout:fragment="script" type='text/javascript'>
     const delete_elements = document.getElementsByClassName("delete");
