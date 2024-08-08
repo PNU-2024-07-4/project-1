@@ -49,8 +49,11 @@
     </div>
 
     <div sec:authorize="isAuthenticated()"  th:if="${ #authentication.principal.username == board.user.username}">
-        <form th:action="@{|/board/edit/${board.id}|}" method="post">
+        <form th:action="@{|/board/edit/${board.id}|}" method="get">
             <button type="submit" class="btn btn-secondary w-full text-sm">글 수정하기</button>
+        </form>
+        <form th:action="@{|/board/delete/${board.id}|}" method="get">
+            <button type="submit" class="delete btn btn-primary w-full text-sm" >글 삭제하기</button>
         </form>
     </div>
     <div sec:authorize="isAuthenticated()" th:if="${#authentication.principal == null or #authentication.principal.username != board.user.username}">
@@ -89,5 +92,15 @@
         </ul>
     </div>
 </div>
+<script layout:fragment="script" type='text/javascript'>
+    const delete_elements = document.getElementsByClassName("delete");
+    Array.from(delete_elements).forEach(function(element) {
+        element.addEventListener('click', function() {
+            if(confirm("정말로 삭제하시겠습니까?")) {
+                location.href = this.dataset.uri;
+            };
+        });
+    });
+</script>
 </body>
 </html>

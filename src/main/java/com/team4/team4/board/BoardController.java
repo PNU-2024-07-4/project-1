@@ -71,7 +71,37 @@ public class BoardController {
         boardForm.setEndDay(board.getEndDay());
         boardForm.setRecommendedTo(board.getRecommendedTo());
         boardForm.setRecruitNumber(board.getRecruitNumber());
+
+        System.out.println(boardForm.toString());
+
         return "board_form";
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @PostMapping("/edit/{id}")
+    public String boardEdit(@Valid BoardForm boardForm, BindingResult bindingResult, Principal principal, @PathVariable("id") Long id) {
+        if(bindingResult.hasErrors()) {
+            return "board_form";
+        }
+        System.out.println("board Form : " + boardForm.toString());
+        Board board = this.boardService.getBoard(id);
+
+        if(!board.getUser().getUsername().equals(principal.getName())){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "수정권한이 없습니다");
+        }
+        this.boardService.edit(board, boardForm);
+        return String.format("redirect:/board/detail/%d", id);
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/delete/{id}")
+    public String boardDelete(Principal principal, @PathVariable("id") Long id){
+        Board board = this.boardService.getBoard(id);
+        if(!board.getUser().getUsername().equals(principal.getName())){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "삭제권한이 없습니다.");
+        }
+        this.boardService.delete(board);
+        return  String.format("redirect:/board/", id);
     }
 
 
