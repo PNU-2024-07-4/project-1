@@ -8,8 +8,7 @@
     <link href="https://cdn.jsdelivr.net/npm/daisyui@1.10.0/dist/full.css" rel="stylesheet">
 </head>
 <body>
-<div layout:fragment="content" class="container mt-auto flex justify-center">
-    <div class="card bg-white border border-gray-200 shadow-lg max-w-md min-h-full w-full">
+<div layout:fragment="content" class="container my-3 mx-auto max-w-lg p-4">
         <!-- 헤더 -->
         <div class="card-header bg-slate-200 text-black pt-14 py-14 px-6 rounded-b-lg">
             <!-- 이름 -->
@@ -31,7 +30,7 @@
                 <p class="font-medium text-gray-800">
                     <span class="font-semibold">SNS 계정</span>
                 </p>
-                <p th:text="${loggedInUser.socialMediaHandles}" class="text-gray-600 mt-1">SNS 계정</p>
+                <a th:href="${loggedInUser.socialMediaHandles}"><p th:text="${loggedInUser.socialMediaHandles}" class="text-blue-500 mt-1">SNS 계정</p></a>
             </div>
         </div>
         <div class="px-6 py-4 border-t border-gray-200 text-left">
@@ -54,6 +53,5 @@
             <button class="btn btn-primary"><a th:href="@{/user/profile/modify}">프로필 수정</a></button>
         </div>
     </div>
-</div>
 </body>
 </html>
