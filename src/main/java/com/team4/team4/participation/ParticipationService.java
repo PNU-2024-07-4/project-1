@@ -83,4 +83,9 @@ public class ParticipationService {
         .filter(participation -> participation.getStatus() == Participation.ParticipationStatus.APPROVED)
         .count();
   }
+
+  public boolean isAlreadyParticipated(Long boardId, SiteUser participant) {
+    // 이미 신청한 여부를 체크하는 로직
+    return participationRepository.existsByBoardIdAndParticipant(boardId, participant);
+  }
 }
