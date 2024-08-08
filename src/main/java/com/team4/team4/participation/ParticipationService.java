@@ -1,7 +1,9 @@
 package com.team4.team4.participation;
 
 import com.team4.team4.DataNotFoundException;
+import com.team4.team4.RecruitmentException;
 import com.team4.team4.board.Board;
+import com.team4.team4.board.BoardRepository;
 import com.team4.team4.board.BoardService;
 import com.team4.team4.user.SiteUser;
 import com.team4.team4.user.UserService;
