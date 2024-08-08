@@ -121,7 +121,7 @@
 
             <div sec:authorize="isAuthenticated()" th:if="${#authentication.principal == null or #authentication.principal.username != board.user.username}">
                 <form th:action="@{|/participations/create/${board.id}|}" method="post">
-                    <button type="submit" class="btn h-10 bg-[#5B5FC7] w-full text-sm">나도 참여하기</button>
+                    <button type="submit" class="btn btn-sm h-10 bg-[#5B5FC7] w-full text-sm">나도 참여하기</button>
                 </form>
             </div>
 
