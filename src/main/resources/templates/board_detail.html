@@ -6,7 +6,7 @@
 </head>
 <body>
 <div layout:fragment="content">
-    <div class="flex flex-col p-5 pb-20 gap-6">
+    <div class="flex flex-col p-5 pb-16 gap-6">
         <!-- 제목 -->
         <div>
             <div class="text-xl font-bold" th:text="${board.subject}"></div>
@@ -80,28 +80,6 @@
                             </div>
                         </div>
                         <div class="text-sm" th:text="${participation.participant.contactNumber}"></div>
-    <div sec:authorize="isAuthenticated()"  th:if="${ #authentication.principal.username == board.user.username}">
-        <form th:action="@{|/board/edit/${board.id}|}" method="get">
-            <button type="submit" class="btn btn-secondary w-full text-sm">글 수정하기</button>
-        </form>
-        <form th:action="@{|/board/delete/${board.id}|}" method="get">
-            <button type="submit" class="delete btn btn-primary w-full text-sm" >글 삭제하기</button>
-        </form>
-    </div>
-    <div sec:authorize="isAuthenticated()" th:if="${#authentication.principal == null or #authentication.principal.username != board.user.username}">
-        <form th:action="@{|/participations/create/${board.id}|}" method="post">
-            <button type="submit" class="btn btn-primary w-full text-sm">참여하기</button>
-        </form>
-    </div>
-
-    <div >
-        <div>참여신청 인원(<span th:text="${board.participations.size()}"/>명)</div>
-        <ul>
-            <li th:each="participation : ${board.participations}">
-                <div>
-                    <span th:text="${participation.participant.username}"></span>
-                    <span th:text="${participation.participant.contactNumber}"></span>
-                    <span th:text="${participation.getStatusDisplay()}"></span>
 
                         <!-- 게시글 작성자일 경우 수락/거절 버튼 -->
                         <div class="flex gap-2" sec:authorize="isAuthenticated()" th:if="${#authentication.principal.username == board.user.username}">
@@ -127,17 +105,26 @@
         </div>
 
         <!-- 작성자일 경우 수정하기 버튼, 그 외 유저는 참여하기 버튼 -->
-        <div class="fixed bottom-0 left-0 p-4 w-full">
-            <div sec:authorize="isAuthenticated()"  th:if="${ #authentication.principal.username == board.user.username}">
-                <form th:action="@{|/board/edit/${board.id}|}" method="get">
-                    <button type="submit" class="btn h-10 btn-secondary w-full text-sm">글 수정하기</button>
-                </form>
+        <div class="fixed bottom-0 left-0 p-5 w-full">
+            <div class="flex gap-2" sec:authorize="isAuthenticated()"  th:if="${ #authentication.principal.username == board.user.username}">
+                <div class="w-full">
+                    <form class="w-full" th:action="@{|/board/edit/${board.id}|}" method="get">
+                        <button type="submit" class="btn btn-sm btn-neutral btn-block w-full">수정하기</button>
+                    </form>
+                </div>
+                <div class="w-full" sec:authorize="isAuthenticated()"  th:if="${ #authentication.principal.username == board.user.username}">
+                    <form class="w-full" th:action="@{|/board/delete/${board.id}|}" method="get">
+                        <button type="submit" class="delete btn btn-sm btn-error btn-block  w-full" >삭제하기</button>
+                    </form>
+                </div>
             </div>
+
             <div sec:authorize="isAuthenticated()" th:if="${#authentication.principal == null or #authentication.principal.username != board.user.username}">
                 <form th:action="@{|/participations/create/${board.id}|}" method="post">
                     <button type="submit" class="btn h-10 bg-[#5B5FC7] w-full text-sm">나도 참여하기</button>
                 </form>
             </div>
+
         </div>
 </div>
 <script layout:fragment="script" type='text/javascript'>

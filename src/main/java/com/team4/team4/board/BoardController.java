@@ -1,18 +1,17 @@
 package com.team4.team4.board;
 
-import org.springframework.data.domain.Page;
-import org.springframework.http.HttpStatus;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import com.team4.team4.participation.ParticipationService;
 import com.team4.team4.user.SiteUser;
 import com.team4.team4.user.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.GetMapping;
-
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.security.Principal;
@@ -23,6 +22,7 @@ import java.security.Principal;
 public class BoardController {
     private final BoardService boardService;
     private final UserService userService;
+    private final ParticipationService participationService;
 
     @GetMapping("/")
     public String getAllBoards(Model model, @RequestParam(value="page", defaultValue ="0") int page) {
@@ -34,6 +34,8 @@ public class BoardController {
     @GetMapping("/detail/{id}")
     public String detail(Model model, @PathVariable("id") Long id) {
         Board board = this.boardService.getBoard(id);
+        int approvedCount = participationService.countApprovedParticipations(board.getId());
+        board.setCurrentNumber(approvedCount);
         model.addAttribute("board", board);
         return "board_detail";
     }
@@ -48,7 +50,6 @@ public class BoardController {
     @PostMapping("/create")
     public String createBoard(@Valid BoardForm boardForm, BindingResult bindingResult, Principal principal) {
         if(bindingResult.hasErrors()) {
-            System.out.println(bindingResult.getAllErrors());
             return "board_form";
         }
         SiteUser user = this.userService.getUser(principal.getName());
@@ -72,8 +73,6 @@ public class BoardController {
         boardForm.setRecommendedTo(board.getRecommendedTo());
         boardForm.setRecruitNumber(board.getRecruitNumber());
 
-        System.out.println(boardForm.toString());
-
         return "board_form";
     }
 
@@ -83,7 +82,6 @@ public class BoardController {
         if(bindingResult.hasErrors()) {
             return "board_form";
         }
-        System.out.println("board Form : " + boardForm.toString());
         Board board = this.boardService.getBoard(id);
 
         if(!board.getUser().getUsername().equals(principal.getName())){
@@ -103,6 +101,4 @@ public class BoardController {
         this.boardService.delete(board);
         return  String.format("redirect:/board/", id);
     }
-
-
 }

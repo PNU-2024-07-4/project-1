@@ -4,7 +4,6 @@ import com.team4.team4.DataNotFoundException;
 import com.team4.team4.board.Board;
 import com.team4.team4.board.BoardService;
 import com.team4.team4.user.SiteUser;
-import com.team4.team4.user.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -16,7 +15,6 @@ import java.util.Optional;
 public class ParticipationService {
   private final ParticipationRepository participationRepository;
   private final BoardService boardService;
-  private final UserService userService;
 
   public Participation createParticipation(Long boardId, SiteUser participant) {
     Board board = boardService.getBoard(boardId);
@@ -41,13 +39,21 @@ public class ParticipationService {
 
   public void acceptParticipation(Long participationId) {
     Participation participation = getParticipation(participationId);
+    Board board = participation.getBoard();
     participation.setStatus(Participation.ParticipationStatus.APPROVED);
     participation.setResponseDate(LocalDateTime.now());
     participationRepository.save(participation);
+    board.setCurrentNumber(board.getCurrentNumber() + 1);
+    boardService.save(board);  // Add save method in BoardService if not exists
   }
 
   public void rejectParticipation(Long participationId) {
     Participation participation = getParticipation(participationId);
+    if (participation.getStatus() == Participation.ParticipationStatus.APPROVED) {
+      Board board = participation.getBoard();
+      board.setCurrentNumber(board.getCurrentNumber() - 1);
+      boardService.save(board);  // Add save method in BoardService if not exists
+    }
     participation.setStatus(Participation.ParticipationStatus.REJECTED);
     participation.setResponseDate(LocalDateTime.now());
     participationRepository.save(participation);
@@ -55,6 +61,18 @@ public class ParticipationService {
 
   public void cancelParticipation(Long participationId) {
     Participation participation = getParticipation(participationId);
+    if (participation.getStatus() == Participation.ParticipationStatus.APPROVED) {
+      Board board = participation.getBoard();
+      board.setCurrentNumber(board.getCurrentNumber() - 1);
+      boardService.save(board);  // Add save method in BoardService if not exists
+    }
     participationRepository.delete(participation);
+  }
+
+  public int countApprovedParticipations(Long boardId) {
+    return (int) participationRepository.findByBoard_Id(boardId)
+        .stream()
+        .filter(participation -> participation.getStatus() == Participation.ParticipationStatus.APPROVED)
+        .count();
   }
 }
