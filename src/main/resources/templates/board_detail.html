@@ -6,7 +6,7 @@
 </head>
 <body>
 <div layout:fragment="content">
-    <div class="flex flex-col p-5 gap-6">
+    <div class="flex flex-col p-5 pb-20 gap-6">
         <!-- 제목 -->
         <div>
             <div class="text-xl font-bold" th:text="${board.subject}"></div>
@@ -49,6 +49,37 @@
             <div class="text-sm" th:text="${board.recommendedTo}"></div>
         </div>
 
+        <!-- 참여 신청 인원 -->
+        <div class="flex flex-col gap-3">
+            <div class="text-sm font-bold flex">
+                <div>참여 신청 인원(</div>
+                <div th:text="${board.participations.size()}"></div>
+                <div>명)</div>
+            </div>
+            <!-- 참여자 정보 반복 리스트 -->
+            <div th:each="participation : ${board.participations}">
+                <div class="bg-[#F4F4F4] rounded-lg flex p-2 gap-3 items-center">
+                    <div class="border border-black border-solid bg-white h-10 w-10 rounded-full flex items-center justify-center">
+                        <div>
+                            <i class="fa-regular fa-user text-xl"></i>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-col gap-1">
+                        <div class="flex gap-2 text-sm">
+                            <div class="flex gap-1 font-bold ">
+                                <div th:text="${participation.participant.username}"></div>
+                                <div>님</div>
+                            </div>
+                            <div class="flex text-sm" th:classappend="${participation.status.name().toLowerCase() == 'pending' ? 'text-blue-400' : (participation.status.name().toLowerCase() == 'approved' ? 'text-green-500' : (participation.status.name().toLowerCase() == 'rejected' ? 'text-red-400' : ''))}">
+                                <div>(</div>
+                                <div
+                                     th:text="${participation.getStatusDisplay()}">
+                                </div>
+                                <div>)</div>
+                            </div>
+                        </div>
+                        <div class="text-sm" th:text="${participation.participant.contactNumber}"></div>
     <div sec:authorize="isAuthenticated()"  th:if="${ #authentication.principal.username == board.user.username}">
         <form th:action="@{|/board/edit/${board.id}|}" method="get">
             <button type="submit" class="btn btn-secondary w-full text-sm">글 수정하기</button>
@@ -72,26 +103,42 @@
                     <span th:text="${participation.participant.contactNumber}"></span>
                     <span th:text="${participation.getStatusDisplay()}"></span>
 
-                    <!-- 게시글 작성자일 경우 수락/거절 버튼 -->
-                    <div sec:authorize="isAuthenticated()" th:if="${#authentication.principal.username == board.user.username}">
-                        <form th:action="@{|/participations/accept/${participation.id}|}" method="post">
-                            <input type="submit" value="수락하기">
-                        </form>
-                        <form th:action="@{|/participations/reject/${participation.id}|}" method="post">
-                            <input type="submit" value="거절하기">
-                        </form>
+                        <!-- 게시글 작성자일 경우 수락/거절 버튼 -->
+                        <div class="flex gap-2" sec:authorize="isAuthenticated()" th:if="${#authentication.principal.username == board.user.username}">
+                            <form class="text-sm text-green-500 underline" th:action="@{|/participations/accept/${participation.id}|}" method="post" >
+                                <input class="underline" type="submit" value="수락하기">
+                            </form>
+                            <form class="text-sm text-red-400 underline" th:action="@{|/participations/reject/${participation.id}|}" method="post">
+                                <input class="underline" type="submit" value="거절하기">
+                            </form>
+                        </div>
+
+                        <!-- 참여자 본인일 경우 신청 취소 버튼 -->
+                        <div sec:authorize="isAuthenticated()" th:if="${#authentication.principal != null and #authentication.principal.username == participation.participant.username}">
+                            <form class="text-sm text-red-400" th:action="@{|/participations/cancel/${participation.id}|}" method="post">
+                                <input class="underline" type="submit" value="신청취소">
+                            </form>
+                        </div>
                     </div>
 
-                    <!-- 참여자 본인일 경우 신청 취소 버튼 -->
-                    <div sec:authorize="isAuthenticated()" th:if="${#authentication.principal != null and #authentication.principal.username == participation.participant.username}">
-                        <form th:action="@{|/participations/cancel/${participation.id}|}" method="post">
-                            <input type="submit" value="신청취소">
-                        </form>
-                    </div>
+
                 </div>
-            </li>
-        </ul>
-    </div>
+            </div>
+        </div>
+
+        <!-- 작성자일 경우 수정하기 버튼, 그 외 유저는 참여하기 버튼 -->
+        <div class="fixed bottom-0 left-0 p-4 w-full">
+            <div sec:authorize="isAuthenticated()"  th:if="${ #authentication.principal.username == board.user.username}">
+                <form th:action="@{|/board/edit/${board.id}|}" method="get">
+                    <button type="submit" class="btn h-10 btn-secondary w-full text-sm">글 수정하기</button>
+                </form>
+            </div>
+            <div sec:authorize="isAuthenticated()" th:if="${#authentication.principal == null or #authentication.principal.username != board.user.username}">
+                <form th:action="@{|/participations/create/${board.id}|}" method="post">
+                    <button type="submit" class="btn h-10 bg-[#5B5FC7] w-full text-sm">나도 참여하기</button>
+                </form>
+            </div>
+        </div>
 </div>
 <script layout:fragment="script" type='text/javascript'>
     const delete_elements = document.getElementsByClassName("delete");
