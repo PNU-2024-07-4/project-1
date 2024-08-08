@@ -25,6 +25,11 @@ public class ParticipationController {
             return "redirect:/user/login";
         }
         SiteUser participant = userService.getUser(principal.getName());
+        if (participationService.isAlreadyParticipated(boardId,participant)) {
+            model.addAttribute("error", "이미 이 게시글에 신청하셨습니다.");
+            // 게시글 상세 페이지로 리다이렉트
+            return String.format("redirect:/board/detail/%s", boardId);
+        }
         participationService.createParticipation(boardId, participant);
         return String.format("redirect:/board/detail/%s", boardId);
     }
