@@ -30,13 +30,17 @@ public class ParticipationController {
     }
 
     @PostMapping("/accept/{participationId}")
-    public String acceptParticipation(@PathVariable("participationId") Long participationId, Principal principal) {
+    public String acceptParticipation(@PathVariable("participationId") Long participationId, Principal principal, Model model) {
         if (principal == null) {
             return "redirect:/user/login";
         }
         Participation participation = participationService.getParticipation(participationId);
-        participationService.acceptParticipation(participationId);
-        return String.format("redirect:/board/detail/%s", participation.getBoard().getId());
+        try {
+            participationService.acceptParticipation(participationId);
+            return String.format("redirect:/board/detail/%s", participation.getBoard().getId());
+        } catch(RuntimeException e) {
+            return String.format("redirect:/board/detail/%s", participation.getBoard().getId());
+        }
     }
 
     @PostMapping("/reject/{participationId}")

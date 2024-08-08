@@ -60,7 +60,7 @@ public class UserController {
     public String profile(Model model, Principal principal) {
         SiteUser loggedInUser = this.userService.getUser(principal.getName());
         model.addAttribute("loggedInUser", loggedInUser);
-
+        model.addAttribute("boards",loggedInUser.getBoards());
         return "profile_form";
     }
 
