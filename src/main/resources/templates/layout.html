@@ -17,14 +17,17 @@
     <title>취미를 공유할 사람 어디 없나</title>
 </head>
 <body>
-<!-- 네비게이션바 -->
-<nav th:replace="~{navbarFragment :: navbarFragment}"></nav>
-<!-- 기본 템플릿 안에 삽입될 내용 Start -->
-<th:block layout:fragment="content"></th:block>
-<!-- 기본 템플릿 안에 삽입될 내용 End -->
+    <div class="mx-auto max-w-lg">
+        <!-- 네비게이션바 -->
+        <nav th:replace="~{navbarFragment :: navbarFragment}"></nav>
+        <!-- 기본 템플릿 안에 삽입될 내용 Start -->
+        <th:block layout:fragment="content"></th:block>
+        <!-- 기본 템플릿 안에 삽입될 내용 End -->
+    </div>
 
-<!— 자바스크립트 Start —>
-<th:block layout:fragment="script"></th:block>
-<!— 자바스크립트 End —>
+
+    <!— 자바스크립트 Start —>
+    <th:block layout:fragment="script"></th:block>
+    <!— 자바스크립트 End —>
 </body>
 </html>
