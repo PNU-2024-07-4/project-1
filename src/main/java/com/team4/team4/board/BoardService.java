@@ -66,6 +66,11 @@ public class BoardService {
         board.setRegion(boardForm.getRegion());
         board.setRecruitNumber(boardForm.getRecruitNumber());
         board.setRecommendedTo(boardForm.getRecommendedTo());
+        this.boardRepository.save(board);
+    }
+
+    public void delete (Board board) {
+        this.boardRepository.delete(board);
     }
 
 }

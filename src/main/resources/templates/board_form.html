@@ -20,7 +20,7 @@
 
                     <div>
                         <label class="form-control w-full">
-                            <div class="label" th:for="*{subject}">
+                            <div class="label">
                                 <span class="label-text font-bold">게시판 이름을 작성해주세요</span>
                             </div>
                             <input th:field="*{subject}" required type="text" id="subject" placeholder="게시판 이름입니다." class="input input-bordered input-sm w-full" />
@@ -40,13 +40,13 @@
                         <div class="label-text font-bold">소모임 시작 날자와 종료 날자를 입력해주세요</div>
 
                         <label class="form-control w-full">
-                            <div class="label" th:for="*{startDay}">
+                            <div class="label" th:for="startDay">
                                 <span class="label-text font-bold">시작 날짜</span>
                             </div>
-                            <input th:field="*{startDay}" class="input input-bordered input-sm w-full" type="date" name="startDay" id="startDay" placeholder="시작날자 (ex.2024.08.01)" />
+                            <input th:field="*{startDay}" value=""  class="input input-bordered input-sm w-full" type="date" name="startDay" id="startDay" placeholder="시작날자 (ex.2024.08.01)" />
                         </label>
                         <label class="form-control w-full">
-                            <div class="label" th:for="*{endDay}">
+                            <div class="label" th:for="endDay">
                                 <span class="label-text font-bold">종료 날짜</span>
                             </div>
                             <input th:field="*{endDay}" class="input input-bordered input-sm w-full" type="date" name="endDay" id="endDay" placeholder="종료날자 (ex.2024.08.02)" />
@@ -91,4 +91,5 @@
         </div>
     </div>
 </div>
+
 </html>

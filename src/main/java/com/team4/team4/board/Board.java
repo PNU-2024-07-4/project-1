@@ -47,7 +47,7 @@ public class Board {
   @Column(length = 50)
   private String recommendedTo;
 
-  @OneToMany(mappedBy = "board")
+  @OneToMany(mappedBy = "board", cascade = CascadeType.ALL, orphanRemoval = true)
   private List<Participation> participations;
 
   private LocalDateTime createDate;
