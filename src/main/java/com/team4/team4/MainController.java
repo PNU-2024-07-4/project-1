@@ -15,7 +15,7 @@ public class MainController {
     @GetMapping("/secret")
     @ResponseBody
     public String showSecret(Model model) {
-        return "The secret name is: " + siteSecretName;
+        return "The secret name is!: " + siteSecretName;
     }
 
     @GetMapping("/")
