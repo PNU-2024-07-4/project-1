@@ -6,6 +6,8 @@
 - 모임을 만들고 싶은 사람은 게시판에 글을 써서 인원을 모집할 수 있습니다.
 - 모임에 참여하고 싶은 사람은 게시판의 글을 보고 참여하기 버튼을 눌러 모임에 참여할 수 있습니다.
 - 각 게시글에는 현재까지 모집된 인원이 실시간으로 집계되어 보여집니다.
+- 소개 pdf 구글 드라이브 공유 링크: 
+- 시연 YouTube 영상: 
 
 ## 팀원 구성
 
@@ -405,4 +407,4 @@ ParticipationService에 이미 신청한 사용자라면 True를 반환하는 �
     }
 ```
 
-마지막으로 ParticipationController에서 isAlreadyParticipated가 True를 반환하면 게시글 상세페이지로 리다이렉트 하게
+마지막으로 ParticipationController에서 isAlreadyParticipated가 True를 반환하면 게시글 상세페이지로 리다이렉트 하게끔 만들어 중복신청을 방지하였습니다.
