@@ -65,3 +65,22 @@ jobs:
           tags: |
             ghcr.io/${{ env.OWNER_LC }}/team4:${{ needs.makeTagAndRelease.outputs.tag_name }},
             ghcr.io/${{ env.OWNER_LC }}/team4:latest
+deploy:
+    runs-on: ubuntu-latest
+    needs: [ buildImageAndPush ]
+    steps:
+      - name: AWS SSM Send-Command
+        uses: peterkimzz/aws-ssm-send-command@master
+        id: ssm
+        with:
+          aws-region: ${{ secrets.AWS_REGION }}
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          instance-ids: "i-0d6531d7c78b64f48"
+          working-directory: /
+          comment: Deploy
+          command: |
+            mkdir -p /dockerProjects/team4
+            curl -o /dockerProjects/team4/zero_downtime_deploy.py https://raw.githubusercontent.com/PNU-2024-07-TEAM4/project-1/main/infraScript/zero_downtime_deploy.py
+            chmod +x /dockerProjects/team4/zero_downtime_deploy.py
+            /dockerProjects/team4/zero_downtime_deploy.py
